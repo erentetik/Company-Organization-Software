@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 function NavigateButton({ to, buttonText }) {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ function NavigateButton({ to, buttonText }) {
     };
 
     return (
-        <button onClick={handleNavigate} className='navigate-button'>{buttonText}</button>
+        <Button variant="outlined" onClick={handleNavigate}>{buttonText}</Button>
     );
 }
 

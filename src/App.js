@@ -1,7 +1,8 @@
 import React from 'react';
-import SignIn from './components/SignIn';
-import ActivateUser from './components/ActivateUser';
-import ResetPassword from './components/ResetPassword';
+import SignIn from './pages/SignIn';
+import ActivateUser from './pages/ActivateUser';
+import ResetPassword from './pages/ResetPassword';
+import SetNewPassword from './pages/SetNewPassword';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
             <Route extact path="/" element={<SignIn />}  /> 
             <Route path="/ResetPassword" element={<ResetPassword />} />
             <Route path="/ActivateUser" element={<ActivateUser />} />
+            <Route path="/SetNewPassword" element={<SetNewPassword />} />
+
           </Routes>
       </div>
     </Router>
