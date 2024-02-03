@@ -1,0 +1,50 @@
+body {
+  background: #363636;
+  color: rgb(54, 47, 47);
+  letter-spacing: 0.7px;
+  margin: 0;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  grid-gap: 20px;
+  grid-template-columns: auto; /* Aligns content in one column */
+}
+
+.sign-in-page, .activate-user, .reset-password-page {
+  background-color: #cf7171;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.email-input,
+.password-input {
+  margin: 0 auto; /* Centering inputs */
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 150px;
+  text-align: center;
+}
+
+.button, .navigate-button {
+  background-color: #4CAF50;
+  margin: 10px auto; /* Centering buttons */
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button:hover, .navigate-button:hover {
+  background-color: #45a049;
+}
+
