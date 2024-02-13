@@ -22,8 +22,8 @@ function SignIn() {
 
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+    const handleSubmit = async (data) => {
+      data.preventDefault();
   
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
@@ -32,10 +32,10 @@ function SignIn() {
       setError(''); 
 
       await axios.post('https://delta.eu-west-1.elasticbeanstalk.com/api/v1/auth/signin', {
-        email: email,
-        password: password
+        email: data.email,
+        password: data.password
       }).then(response => {
-        console.log(response);
+        console.log("Fetch operation was successful" , response);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -68,7 +68,7 @@ function SignIn() {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(data) => setEmail(data.target.value)}
                   error={!!error} 
                   helperText={error} 
                 />
@@ -80,7 +80,7 @@ function SignIn() {
                   label="Password"
                   type="password"
                   id="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(data) => setPassword(data.target.value)}
                   autoComplete="current-password"
                 />
                 <FormControlLabel
