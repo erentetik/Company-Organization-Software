@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 const MAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -20,6 +21,7 @@ function SignIn() {
     const [password, setPassword] = useState('');
 
     const [error, setError] = useState('');
+
     const handleSubmit = async (e) => {
       e.preventDefault();
   
@@ -29,28 +31,16 @@ function SignIn() {
       }
       setError(''); 
 
-      try {
-          const response = await fetch('http://db/api/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email, password }),
-          });
-  
-          const data = await response.json();
-  
-          if (response.ok) {
-              // fix this
-              console.log('Login successful:', data);
-          } else {
-              // fix this
-              setError(data.message || 'Login failed');
-          }
-      } catch (error) {
-          // fix this
-          setError('Network error');
-      }
+      await axios.post('https://delta.eu-west-1.elasticbeanstalk.com/api/v1/auth/signin', {
+        email: email,
+        password: password
+      }).then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+         
   };
 
     return (
