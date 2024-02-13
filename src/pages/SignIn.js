@@ -80,6 +80,7 @@ function SignIn() {
                   label="Password"
                   type="password"
                   id="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                 />
                 <FormControlLabel
