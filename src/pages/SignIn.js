@@ -23,7 +23,8 @@ function SignIn() {
     const [error, setError] = useState('');
 
     const handleSubmit = async (data) => {
-  
+        data.preventDefault();
+
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
           return;
