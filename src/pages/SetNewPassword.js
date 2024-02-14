@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { validatePassword } from './constants';
+import { url } from './constants';
+import axios from 'axios';
 
 function ResetPassword() {
     const defaultTheme = createTheme();
@@ -13,40 +16,28 @@ function ResetPassword() {
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
 
-    const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-
-    const validatePassword = (password) => {
-        const errorMessages = [];
-
-        if (password.length < 8 || password.length > 20) {
-            errorMessages.push('Password length should be between 8 and 20 characters.\n');
-        }
-        if (!/[A-Z]/.test(password)) {
-            errorMessages.push('Password must contain at least one uppercase character.\n');
-        }
-        if (!/[a-z]/.test(password)) {
-            errorMessages.push('Password must contain at least one lowercase character.\n');
-        }
-        if (!/\d/.test(password)) {
-            errorMessages.push('Password must contain at least one numeric character.\n');
-        }
-        if (!/[@$!%*?&]/.test(password)) {
-            errorMessages.push('Password must contain at least one special symbol among @$.!-+');
-        }
-
-        return errorMessages;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (data) => {
+        data.preventDefault();
         const validationErrors = validatePassword(password);
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
             return;
         }
         setErrors([]); // Clear any previous errors
-        // make an API call to back-end
+
+        const formData = new FormData(data.target);
+        const password = formData.get("password");
+
+        await axios.put(url + '/api/v1/auth/set-password', {
+          password: password
+        }).then(response => {
+          console.log("Fetch operation was successful" , response);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
     };
+
     return (
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
@@ -72,7 +63,7 @@ function ResetPassword() {
                   name="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(data) => setPassword(data.target.value)}
                   error={!!error} 
                   helperText={error} 
                 />

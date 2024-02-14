@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { MAIL_REGEX , url} from './constants';
 
-const MAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 function SignIn() {
     const defaultTheme = createTheme();
@@ -23,17 +23,21 @@ function SignIn() {
     const [error, setError] = useState('');
 
     const handleSubmit = async (data) => {
-      data.preventDefault();
-  
+        data.preventDefault();
+
+          const formData = new FormData(data.target);
+          const email = formData.get("email");
+          const password = formData.get("password");
+
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
           return;
       }
       setError(''); 
 
-      await axios.post('https://delta.eu-west-1.elasticbeanstalk.com/api/v1/auth/signin', {
-        email: data.email,
-        password: data.password
+      await axios.post(url + '/api/v1/auth/signin', {
+        email: email,
+        password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
       })

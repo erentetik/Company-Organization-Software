@@ -7,21 +7,34 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const MAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+import axios from 'axios';
+import  { MAIL_REGEX }  from './constants';
+import { url } from './constants';
 
 const ActivateUser = () => {
     const defaultTheme = createTheme();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+    const handleSubmit = async (data) => {
+      data.preventDefault();
+
+      const formData = new FormData(data.target);
+      const email = formData.get("email");
+
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
           return;
       }
-      setError(''); // Clear any previous errors
-      // make an API call to back-end
+      setError(''); 
+      
+      await axios.post(url + "/api/v1/auth/activate-user", {
+        email: email
+      }).then(response => {
+        console.log("Fetch operation was successful" , response);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
   };
 
     return (
@@ -44,7 +57,7 @@ const ActivateUser = () => {
                   margin="normal"
                   required
                   fullWidth
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(data) => setEmail(data.target.value)}
                   id="email"
                   type='email'
                   label="Email Address"

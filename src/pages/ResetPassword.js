@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
 import NavigateButton from '../components/NavigateButton';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const MAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+import { MAIL_REGEX } from './constants';
+import { url } from './constants';
+import axios from 'axios';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
 
 function ResetPassword() {
     const defaultTheme = createTheme();
 
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+    
+    const handleSubmit = async (data) => {
+      data.preventDefault();
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
           return;
       }
       setError(''); 
-      
-      // make an API call to back-end
+
+      const formData = new FormData(data.target);
+      const email = formData.get("email");
+
+      await axios.post(url + '/api/v1/auth/reset-password', {
+        email: email
+      }).then(response => {
+        console.log("Fetch operation was successful" , response);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+         
   };
-
-
+      
     return (
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
@@ -51,7 +62,7 @@ function ResetPassword() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(data) => setEmail(data.target.value)}
                   type='email'
                   error={!!error} // Display error state
                   helperText={error} // Show error message
