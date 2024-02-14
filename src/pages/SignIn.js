@@ -32,8 +32,8 @@ function SignIn() {
       setError(''); 
 
       await axios.post('https://delta.eu-west-1.elasticbeanstalk.com/api/v1/auth/signin', {
-        email: data.email,
-        password: data.password
+        email: email,
+        password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
       })
