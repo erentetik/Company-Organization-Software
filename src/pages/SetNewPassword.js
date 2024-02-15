@@ -13,6 +13,9 @@ import axios from 'axios';
 function ResetPassword() {
     const defaultTheme = createTheme();
     const { token }  = useParams();
+    const navigate = useNavigate()
+    const [isLinkValid, setValid] = useState(false);
+
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
 
@@ -34,24 +37,25 @@ function ResetPassword() {
     useEffect(() => {
       verifyLink()
   }, [])
-  
-    const handleSubmit = async (data) => {
-      data.preventDefault();
-      if (isLinkValid) {
-        await axios.post(url + '/auth/setNewPassword', {
-            token: token,
-            password: data
-        }).then((response) => {
-          console.log("Fetch operation was successful" , response);
 
-        }).catch((error) => {
-          console.error('There was a problem with the fetch operation:', error);
+    const handleSubmit = async (data) => {
+        data.preventDefault();
+
+        if (isLinkValid) {
+          await axios.post(url + '/auth/setNewPassword', {
+              token: token,
+              password: data
+          }).then((response) => {
+              console.log("Fetch operation was successful" , response);
+              navigate("/")
+          }).catch((error) => {
+              console.log("There was a problem with the fetch operation:", error);
+              navigate("/")
           })
-          navigate("/")
-      }
 
         
         const validationErrors = validatePassword(password);
+        
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
             return;

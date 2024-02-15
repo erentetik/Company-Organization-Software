@@ -13,8 +13,7 @@ function App() {
             <Route extact path="/" element={<SignIn />}  /> 
             <Route path="/ResetPassword" element={<ResetPassword />} />
             <Route path="/ActivateUser" element={<ActivateUser />} />
-            <Route path="/SetNewPassword" element={<SetNewPassword />} />
-
+            <Route path="setNewPassword/:token" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
           </Routes>
       </div>
     </Router>
