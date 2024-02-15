@@ -51,6 +51,7 @@ function SetNewPassword() {
       }
 
       setErrors([]); // Clear any previous errors
+<<<<<<< HEAD
       if (isPasswordValid && isLinkValid) {
           await axios.put(url + '/api/v1/auth/set-password/' + token, {
               token: token,
