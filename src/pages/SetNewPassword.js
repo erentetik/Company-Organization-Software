@@ -38,6 +38,22 @@ function ResetPassword() {
         const formData = new FormData(data.target);
         const password = formData.get("password");        
 
+<<<<<<< HEAD
+=======
+          await axios.get(url + '/api/v1/auth/set-password', {
+              token: token,
+              password: password
+          }).then((response) => {
+              console.log("Fetch operation was successful" , response);
+              navigate("/")
+          }).catch((error) => {
+              console.log("There was a problem with the fetch operation:", error);
+              navigate("/")
+          })
+        
+
+        
+>>>>>>> 7f22978a26471ec11b4baf7666ef29d225bdbf4b
         const validationErrors = validatePassword(password);
 
         if (validationErrors.length > 0) {
