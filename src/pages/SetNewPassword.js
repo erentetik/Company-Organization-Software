@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import { useNavigate, useParams } from "react-router-dom";
 
-function ResetPassword(type) {
+function ResetPassword() {
     const defaultTheme = createTheme();
     const { token }  = useParams();
     const navigate = useNavigate()
@@ -20,31 +20,17 @@ function ResetPassword(type) {
 
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
-
-    const verifyLink = async () => {
-      await axios.post(url + '/auth/' + type + "?token=" + token)
-          .then((response) => {
-              //continue to site
-              setValid(true)
-
-
-          }).catch((error) => {
-              console.log("There was a problem with the fetch operation:", error);
-              })
-              navigate("/")
-          }
   
-    useEffect(() => {
-      verifyLink()
-  }, [])
 
     const handleSubmit = async (data) => {
         data.preventDefault();
 
-        if (isLinkValid) {
-          await axios.post(url + '/auth/setNewPassword', {
+        const formData = new FormData(data.target);
+        const password = formData.get("password");        
+
+          await axios.post(url + '/api/v1/auth/set-password', {
               token: token,
-              password: data
+              password: password
           }).then((response) => {
               console.log("Fetch operation was successful" , response);
               navigate("/")
@@ -52,7 +38,7 @@ function ResetPassword(type) {
               console.log("There was a problem with the fetch operation:", error);
               navigate("/")
           })
-        }
+        
 
         
         const validationErrors = validatePassword(password);
@@ -63,8 +49,7 @@ function ResetPassword(type) {
         }
         setErrors([]); // Clear any previous errors
 
-        const formData = new FormData(data.target);
-        const password = formData.get("password");
+      
 
         await axios.put(url + '/api/v1/auth/set-password', {
           password: password
