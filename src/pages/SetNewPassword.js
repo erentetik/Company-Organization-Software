@@ -12,12 +12,45 @@ import axios from 'axios';
 
 function ResetPassword() {
     const defaultTheme = createTheme();
-
+    const { token }  = useParams();
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
 
+    const verifyLink = async () => {
+      await axios.post(url + '/auth/' + type + "?token=" + token)
+          .then((response) => {
+              //continue to site
+              setValid(true)
+
+          }).catch((error) => {
+              setSnackbarState({
+                  snackbarOpen: true,
+                  snackbarMessage: "Token is not valid",
+                  severity: "error"
+              })
+              navigate("/")
+          })
+  }
+    useEffect(() => {
+      verifyLink()
+  }, [])
+  
     const handleSubmit = async (data) => {
-        data.preventDefault();
+      data.preventDefault();
+      if (isLinkValid) {
+        await axios.post(url + '/auth/setNewPassword', {
+            token: token,
+            password: data
+        }).then((response) => {
+          console.log("Fetch operation was successful" , response);
+
+        }).catch((error) => {
+          console.error('There was a problem with the fetch operation:', error);
+          })
+          navigate("/")
+      }
+
+        
         const validationErrors = validatePassword(password);
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
@@ -80,6 +113,7 @@ function ResetPassword() {
             </Box>
           </Container>
         </ThemeProvider>
+      
       );
 }
 

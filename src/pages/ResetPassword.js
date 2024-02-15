@@ -16,17 +16,22 @@ function ResetPassword() {
 
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+
+    
     
     const handleSubmit = async (data) => {
       data.preventDefault();
+      
+      const formData = new FormData(data.target);
+      const email = formData.get("email");
+
       if (!MAIL_REGEX.test(email)) {
           setError('Invalid email address');
           return;
       }
       setError(''); 
 
-      const formData = new FormData(data.target);
-      const email = formData.get("email");
+      
 
       await axios.post(url + '/api/v1/auth/reset-password', {
         email: email
