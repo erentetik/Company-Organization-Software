@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,7 +10,9 @@ import { validatePassword } from './constants';
 import { url } from './constants';
 import axios from 'axios';
 
-function ResetPassword() {
+import { useNavigate, useParams } from "react-router-dom";
+
+function ResetPassword(type) {
     const defaultTheme = createTheme();
     const { token }  = useParams();
     const navigate = useNavigate()
@@ -25,15 +27,13 @@ function ResetPassword() {
               //continue to site
               setValid(true)
 
+
           }).catch((error) => {
-              setSnackbarState({
-                  snackbarOpen: true,
-                  snackbarMessage: "Token is not valid",
-                  severity: "error"
+              console.log("There was a problem with the fetch operation:", error);
               })
               navigate("/")
-          })
-  }
+          }
+  
     useEffect(() => {
       verifyLink()
   }, [])
@@ -52,10 +52,11 @@ function ResetPassword() {
               console.log("There was a problem with the fetch operation:", error);
               navigate("/")
           })
+        }
 
         
         const validationErrors = validatePassword(password);
-        
+
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
             return;
@@ -69,7 +70,7 @@ function ResetPassword() {
           password: password
         }).then(response => {
           console.log("Fetch operation was successful" , response);
-        })
+        }) 
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);
         });
