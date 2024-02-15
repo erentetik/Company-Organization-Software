@@ -54,6 +54,10 @@ function SetNewPassword() {
       if (isPasswordValid && isLinkValid) {
           await axios.put(url + '/api/v1/auth/set-password/' + token, {
               token: token,
+=======
+      if (isPasswordValid ) {
+          await axios.put(url + '/api/v1/auth/set-password', {
+>>>>>>> e6bf745fb7fade96cc0331d2c68ae1dbac82f23c
               password: password
           }).then((response) => {
               console.log("Fetch operation was successful", response);
