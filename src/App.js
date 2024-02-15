@@ -13,7 +13,7 @@ function App() {
             <Route extact path="/" element={<SignIn />}  /> 
             <Route path="/ResetPassword" element={<ResetPassword />} />
             <Route path="/ActivateUser" element={<ActivateUser />} />
-            <Route path="setNewPassword/?=token${token}" element={<SetNewPassword/>} />
+            <Route path="setNewPassword/?=token:token" element={<SetNewPassword/>} />
           </Routes>
       </div>
     </Router>
