@@ -28,7 +28,7 @@ function ResetPassword() {
         const formData = new FormData(data.target);
         const password = formData.get("password");        
 
-          await axios.post(url + '/api/v1/auth/set-password', {
+          await axios.get(url + '/api/v1/auth/set-password', {
               token: token,
               password: password
           }).then((response) => {
