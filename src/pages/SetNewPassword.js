@@ -17,10 +17,20 @@ function ResetPassword() {
     const { token }  = useParams();
     const navigate = useNavigate()
     const [isLinkValid, setValid] = useState(false);
-
+    const [isPasswordValid, setPasswordValid] = useState(True);
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
-  
+
+    const getToken = async () => {
+      await axios.get(url + '/api/v1/auth/set-password', {
+        token: token,
+    }).then((response) => {
+        console.log("Fetch operation was successful" , response);
+    }).catch((error) => {
+        console.log("There was a problem with the fetch operation:", error);
+    })
+  }
+      
 
     const handleSubmit = async (data) => {
         data.preventDefault();
@@ -28,37 +38,26 @@ function ResetPassword() {
         const formData = new FormData(data.target);
         const password = formData.get("password");        
 
-          await axios.post(url + '/api/v1/auth/set-password', {
-              token: token,
-              password: password
-          }).then((response) => {
-              console.log("Fetch operation was successful" , response);
-              navigate("/")
-          }).catch((error) => {
-              console.log("There was a problem with the fetch operation:", error);
-              navigate("/")
-          })
-        
-
-        
         const validationErrors = validatePassword(password);
 
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
+            isLinkValid = false;
             return;
         }
         setErrors([]); // Clear any previous errors
-
-      
-
-        await axios.put(url + '/api/v1/auth/set-password', {
-          password: password
-        }).then(response => {
-          console.log("Fetch operation was successful" , response);
-        }) 
-        .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-        });
+        if (isLinkValid) {
+              await axios.put(url + '/api/v1/auth/set-password', {
+                password: password
+            }).then((response) => {
+                console.log("Fetch operation was successful" , response);
+                navigate("/")
+            }).catch((error) => {
+                console.log("There was a problem with the fetch operation:", error);
+                navigate("/")
+            })
+            return;
+        }
     };
 
     return (
