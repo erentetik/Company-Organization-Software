@@ -69,7 +69,6 @@ function SetNewPassword() {
       setErrors([]); // Clear any previous errors
       if (isPasswordValid ) {
           await axios.put(url + '/api/v1/auth/set-password', {
-              token: token,
               password: password
           }).then((response) => {
               console.log("Fetch operation was successful", response);
