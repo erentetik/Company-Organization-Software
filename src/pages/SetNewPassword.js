@@ -12,15 +12,29 @@ import axios from 'axios';
 
 import { useNavigate, useParams } from "react-router-dom";
 
-function ResetPassword() {
+function SetNewPassword() {
     const defaultTheme = createTheme();
     const { token }  = useParams();
     const navigate = useNavigate()
     const [isLinkValid, setValid] = useState(false);
-    const [isPasswordValid, setPasswordValid] = useState(True);
+    const [isPasswordValid, setPasswordValid] = useState(true);
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
 
+    // const verifyLink = async () => {
+    //   await axios.post(url + "/api/v1/auth/set-password" )
+    //     .then((response) => {
+    //       // continue to site
+    //       setValid(true);
+    //     }).catch((error) => {
+    //       setSnackbarState({
+    //         snackbarOpen: true,
+    //         snackbarMessage: "Token is not valid",
+    //         severity: "error"
+    //       });
+    //       navigate("/");
+    //     });
+    // }
     const getToken = async () => {
       await axios.get(url + '/api/v1/auth/set-password', {
         token: token,
@@ -30,36 +44,45 @@ function ResetPassword() {
         console.log("There was a problem with the fetch operation:", error);
     })
   }
+
+    useEffect(() => {
+        getToken();
+    }, [])
       
 
     const handleSubmit = async (data) => {
-        data.preventDefault();
-
-        const formData = new FormData(data.target);
-        const password = formData.get("password");        
-
-        const validationErrors = validatePassword(password);
-
-        if (validationErrors.length > 0) {
-            setErrors(validationErrors);
-            isPasswordValid= false;
-            return;
-        }
-        setErrors([]); // Clear any previous errors
-        if (isPasswordValid) {
-              await axios.put(url + '/api/v1/auth/set-password', {
-                password: password
-            }).then((response) => {
-                console.log("Fetch operation was successful" , response);
-                navigate("/")
-            }).catch((error) => {
-                console.log("There was a problem with the fetch operation:", error);
-                navigate("/")
-            })
-            return;
-        }
-    };
-
+      data.preventDefault();
+  
+      const formData = new FormData(data.target);
+      const password = formData.get("password");
+  
+      const validationErrors = validatePassword(password);
+  
+      if (validationErrors.length > 0) {
+          setErrors(validationErrors);
+          setPasswordValid(false);
+          return;
+      } else {
+          setPasswordValid(true);
+      }
+  
+      setErrors([]); // Clear any previous errors
+      if (isPasswordValid ) {
+          await axios.put(url + '/api/v1/auth/set-password', {
+              token: token,
+              password: password
+          }).then((response) => {
+              console.log("Fetch operation was successful", response);
+              
+              
+          }).catch((error) => {
+              
+              console.log("There was a problem with the fetch operation:", error);
+          });
+          navigate("/");
+      }
+  };
+  
     return (
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
@@ -106,4 +129,4 @@ function ResetPassword() {
       );
 }
 
-export default ResetPassword;
+export default SetNewPassword;
