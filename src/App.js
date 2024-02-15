@@ -6,6 +6,7 @@ import SetNewPassword from './pages/SetNewPassword';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
+  getTokens();
   return (
     <Router>
       <div className= "content">
@@ -13,7 +14,7 @@ function App() {
             <Route extact path="/" element={<SignIn />}  /> 
             <Route path="/ResetPassword" element={<ResetPassword />} />
             <Route path="/ActivateUser" element={<ActivateUser />} />
-            <Route path="setNewPassword/?=token:token" element={<SetNewPassword/>} />
+            <Route path="setNewPassword/:token" element={<SetNewPassword/>} />
           </Routes>
       </div>
     </Router>
