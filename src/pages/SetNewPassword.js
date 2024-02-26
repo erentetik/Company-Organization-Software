@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -19,6 +21,13 @@ function SetNewPassword() {
     const [isPasswordValid, setPasswordValid] = useState(true);
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+  
+    const handleSnackbarClose = () => {
+      setSnackbarOpen(false);
+    };
+  
     console.log(isLinkValid);
     console.log(token);
     const verifyLink = async () => {
@@ -26,8 +35,11 @@ function SetNewPassword() {
        .then((response) => {
            setValid(true);
            console.log("token operation was successful", response);
+           setSnackbarMessage('New password set successfully');
+        setSnackbarOpen(true);
          }).catch((error) => {
             console.error('There was a problem with the token operation:', error);
+            setSnackbarMessage('Invalid token');
             navigate("/");
            });
          };
@@ -106,6 +118,17 @@ function SetNewPassword() {
               </Box>
             </Box>
           </Container>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+      </Snackbar>
         </ThemeProvider>
       
       );

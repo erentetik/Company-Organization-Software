@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import NavigateButton from '../components/NavigateButton';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -13,11 +15,10 @@ import Container from '@mui/material/Container';
 
 function ResetPassword() {
     const defaultTheme = createTheme();
-
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-
-    
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     
     const handleSubmit = async (data) => {
       data.preventDefault();
@@ -37,9 +38,13 @@ function ResetPassword() {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
+        setSnackbarMessage('Verification email sent');
+        setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('Failed to send verification email');
+        setSnackbarOpen(true);
       });
          
   };
@@ -85,6 +90,14 @@ function ResetPassword() {
               </Box>
             </Box>
           </Container>
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={() => setSnackbarOpen(false)}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
         </ThemeProvider>
       );
 }

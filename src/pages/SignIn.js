@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import NavigateButton from '../components/NavigateButton';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,16 +18,21 @@ import { url } from './constants';
 
 
 function SignIn() {
-    const defaultTheme = createTheme();
-    
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const defaultTheme = createTheme();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    const [error, setError] = useState('');
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
     const handleSubmit = async (data) => {
-        data.preventDefault();
 
+        data.preventDefault();
+        
           const formData = new FormData(data.target);
           const email = formData.get("email");
           const password = formData.get("password");
@@ -41,16 +48,23 @@ function SignIn() {
         password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
+        setSnackbarMessage('Login successful');
+        setSnackbarOpen(true);
+        
+      
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('Login failed');
+        setSnackbarOpen(true);
+        
       });
          
   };
 
     return (
         <ThemeProvider theme={defaultTheme}>
-          <Container component="main" maxWidth="xs">
+          <Container component="main" maxWidth="xs"> 
             <CssBaseline />
             <Box
               sx={{
@@ -111,6 +125,17 @@ function SignIn() {
               </Box>
             </Box>
           </Container>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
         </ThemeProvider>
       );
     }
