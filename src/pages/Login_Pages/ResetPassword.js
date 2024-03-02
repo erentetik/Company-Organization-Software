@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NavigateButton from '../components/NavigateButton';
+import NavigateButton from '../../components/NavigateButton';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Button from '@mui/material/Button';
@@ -7,8 +7,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MAIL_REGEX } from './constants';
-import { url } from './constants';
+import { MAIL_REGEX } from '../../components/constants';
+import { url } from '../../components/constants';
 import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';

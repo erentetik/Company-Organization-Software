@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { validatePassword } from './constants';
-import { url } from './constants';
+import { validatePassword } from '../../components/constants';
+import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 

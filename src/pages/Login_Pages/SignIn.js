@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import NavigateButton from '../components/NavigateButton';
+import NavigateButton from '../../components/NavigateButton';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,18 +13,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import { MAIL_REGEX } from './constants';
-import { url } from './constants';
+import { MAIL_REGEX } from '../../components/constants';
+import { url } from '../../components/constants';
 
-
-function SignIn() {
+function SignIn({ setSignedIn }) {
   const defaultTheme = createTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -48,10 +46,19 @@ function SignIn() {
         password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
+        console.log(response.data);
         setSnackbarMessage('Login successful');
         setSnackbarOpen(true);
-        
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("surname", response.data.surname);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("department", response.data.department);
+        localStorage.setItem("company", response.data.company);
+        setSignedIn(true);
       
+    
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

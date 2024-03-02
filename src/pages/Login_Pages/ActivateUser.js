@@ -1,5 +1,5 @@
 import {  useState } from 'react';
-import NavigateButton from '../components/NavigateButton';
+import NavigateButton from '../../components/NavigateButton';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Button from '@mui/material/Button';
@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import  { MAIL_REGEX }  from './constants';
-import { url } from './constants';
+import  { MAIL_REGEX }  from '../../components/constants';
+import { url } from '../../components/constants';
 
 const ActivateUser = () => {
     const defaultTheme = createTheme();
