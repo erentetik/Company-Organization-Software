@@ -41,24 +41,24 @@ function SignIn({ setSignedIn }) {
       }
       setError(''); 
 
+    
       await axios.post(url + '/api/v1/auth/signin', {
         email: email,
         password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        console.log(response.data);
         setSnackbarMessage('Login successful');
         setSnackbarOpen(true);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("name", response.data.name);
-        localStorage.setItem("surname", response.data.surname);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("department", response.data.department);
-        localStorage.setItem("company", response.data.company);
-        setSignedIn(true);
-      
-    
+        localStorage.setItem("name", response.data.userDto.name);
+        localStorage.setItem("surname", response.data.userDto.surname);
+        localStorage.setItem("role", response.data.userDto.role);
+        localStorage.setItem("email", response.data.userDto.email);
+        localStorage.setItem("department", response.data.userDto.department);
+        localStorage.setItem("company", response.data.userDto.company);
+        localStorage.setItem("image", response.data.userDto.image);
+        localStorage.setItem("token", response.data.token);
+        console.log("Token: ", response.data.token);
+        setSignedIn(true); 
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

@@ -5,7 +5,13 @@ import ActivateUser from './pages/Login_Pages/ActivateUser';
 import ResetPassword from './pages/Login_Pages/ResetPassword';
 import SetNewPassword from './pages/Login_Pages/SetNewPassword';
 import Home from './pages/Home page/Home';
+import Users from './pages/Home page/Users';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import DataTable from "./components/table";
+import Companies from './pages/Home page/Companies';
+import Town from './pages/Home page/Town';
+import Regions from './pages/Home page/Regions';
+
 
 function App() {
 
@@ -28,7 +34,13 @@ function App() {
             <Route path="/ActivateUser" element={<ActivateUser />} />
             <Route path="setNewPassword/:token" element={<SetNewPassword />} />
             <Route path="/Home" element={<Home />} />
+            <Route path="/Users" element={<Users />} />
+            <Route path="/table" element={<DataTable />} />
+            <Route path="/Companies" element={<Companies />} /> 
+            <Route path="/Towns" element={<Town />} />
+            <Route path="/Regions" element={<Regions />} />
           </Routes>
+
       </div>
     </Router>
   );
