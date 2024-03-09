@@ -11,11 +11,11 @@ import DataTable from "./components/table";
 import Companies from './pages/Home page/Companies';
 import Town from './pages/Home page/Town';
 import Regions from './pages/Home page/Regions';
-
+import City from './pages/Home page/City';
 
 function App() {
 
-  const [signedIn, setSignedIn] = useState(localStorage.getItem("userId") != null)
+  const [signedIn, setSignedIn] = useState(localStorage.getItem("signedIn") != null)
 
   return (
     <Router>
@@ -39,6 +39,7 @@ function App() {
             <Route path="/Companies" element={<Companies />} /> 
             <Route path="/Towns" element={<Town />} />
             <Route path="/Regions" element={<Regions />} />
+            <Route path="/Cities" element={<City />} />
           </Routes>
 
       </div>

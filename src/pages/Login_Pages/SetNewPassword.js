@@ -28,14 +28,11 @@ function SetNewPassword() {
       setSnackbarOpen(false);
     };
   
-    console.log(isLinkValid);
-    console.log(token);
     const verifyLink = async () => {
        await axios.put(url + "/api/v1/auth/set-password/" + token, {})
        .then((response) => {
            setValid(true);
            console.log("token operation was successful", response);
-           setSnackbarMessage('New password set successfully');
         setSnackbarOpen(true);
          }).catch((error) => {
             console.error('There was a problem with the token operation:', error);
@@ -47,6 +44,7 @@ function SetNewPassword() {
     useEffect(() => {
         verifyLink();
     }, [])
+
     const handleSubmit = async (data) => {
       data.preventDefault();
   

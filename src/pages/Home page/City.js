@@ -7,11 +7,11 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 
-const Regions = () => {
+const City = () => {
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 , editable: true},
+    { field: 'name', headerName: 'Name', width: 150 },
   ];
-  const apiUrl = '/api/v1/region';
+  const apiUrl = '/api/v1/city';
 
   const mapUserData = (data) => {
     return data.map((item) => ({
@@ -19,6 +19,7 @@ const Regions = () => {
         name: item.name,
     }));
 };
+
 
 const [showForm, setShowForm] = useState(false);
 const [name , setName] = useState('');
@@ -36,19 +37,19 @@ const handleClick = () => {
 const handleDelete = async () => {
     const ids = localStorage.getItem("selectedRowIds");
     const parsedIds = parseInt(ids);
-    await axios.delete(url + '/api/v1/region/' + ids , {
+    await axios.delete(url + '/api/v1/city/' + ids , {
         id: parsedIds,
         headers: {
             Authorization: token
         }
     }).then(response => {
         console.log("Fetch operation was successful", response);
-        setSnackbarMessage('region deleted');
+        setSnackbarMessage('city deleted');
         setSnackbarOpen(true);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('region can not deleted');
+        setSnackbarMessage('city can not deleted');
         setSnackbarOpen(true);
     });
 }
@@ -59,7 +60,7 @@ const handleSubmit = async(data) => {
     const name = formData.get("name");
 
 
-    await axios.post(url + '/api/v1/region', {
+    await axios.post(url + '/api/v1/city', {
         name: name,
         }, {
             headers: {
@@ -83,7 +84,7 @@ const handleSubmit = async(data) => {
     return ( 
         <div>
             <NavBar/>
-            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete}/>
+            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} />
             <Button
                   type="Add User"
                   width="100%"
@@ -91,9 +92,8 @@ const handleSubmit = async(data) => {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={handleClick}
                 >
-                  Add Region
+                  Add City
                 </Button>
-                
             {showForm && (
                  <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                  <TextField
@@ -112,7 +112,7 @@ const handleSubmit = async(data) => {
                    variant="contained"
                    sx={{ mt: 3, mb: 2 }}
                  >
-                    Add Region
+                    Add City
                  </Button>
             </Box>
             )}
@@ -120,4 +120,4 @@ const handleSubmit = async(data) => {
      );    
 }
  
-export default Regions;
+export default City;

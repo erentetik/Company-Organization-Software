@@ -36,7 +36,7 @@ const NavBar = () => {
           </Toolbar>
           <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
             <List>
-              {['Home', 'Users', 'Companies', 'Departments', 'Cities', 'Regions', 'Towns'].map(
+              {['Home', 'Users', 'Companies', 'Cities', 'Regions', 'Towns'].map(
                 (text) => (
                   <ListItem button key={text} onClick={() => navigateTo(text)}>
                     <ListItemText primary={text} />

@@ -57,8 +57,8 @@ function SignIn({ setSignedIn }) {
         localStorage.setItem("company", response.data.userDto.company);
         localStorage.setItem("image", response.data.userDto.image);
         localStorage.setItem("token", response.data.token);
-        console.log("Token: ", response.data.token);
         setSignedIn(true); 
+        localStorage.setItem("signedIn", SignIn);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
