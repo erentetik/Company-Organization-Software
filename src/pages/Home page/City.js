@@ -23,7 +23,7 @@ const handleClick = () => {
     
     
 };
-
+const userRole = localStorage.getItem("role");
 
 const [showForm, setShowForm] = useState(false);
 const [name , setName] = useState('');
@@ -110,6 +110,7 @@ const handleChange = async() => {
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
             editData={editData} setEditData={setEditData} handleClick={handleClick} />
+            {userRole === 'ROLE_ADMIN' && (
             <Button
                   type="Add User"
                   width="100%"
@@ -118,7 +119,8 @@ const handleChange = async() => {
                   onClick={handleShowForm}
                 >
                   Add City
-                </Button>
+                </Button> 
+                )}
                 <Dialog open={showForm} onClose={handleShowForm}>
                 <DialogTitle>Add City</DialogTitle>
                 <DialogContent>

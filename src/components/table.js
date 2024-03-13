@@ -10,13 +10,13 @@ import InputLabel from '@mui/material/InputLabel';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 
-    regionList, cityList , handleClick ,region, city , companyType, companyTypeList, addressTown, addressTownList, isCompany}) {
+    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany}) {
     const token = localStorage.getItem("token");
     const [rows, setRows] = useState([]);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [showButton, setShowButton] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
-
+    const userRole = localStorage.getItem("role");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +43,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
     };
 
     useEffect(() => {
-        if (selectedRowIds.length == 1) {
+        if (selectedRowIds.length === 1) {
             localStorage.setItem("selectedRowIds", selectedRowIds);
             setShowButton(true);
         }else{
@@ -96,19 +96,12 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
             </div>
             {showButton && 
             <div>
-            <Button
-                type="Add User"
-                width="100%"
-                onClick={handleDelete}
-            >Delete</Button>
-            
-             <Button
-                type="submit"
-                width="100%"
-                onClick={handleEditClick} // Show button when rows are selected
-            >
-                Edit
-            </Button>
+            {userRole === 'ROLE_ADMIN' && (
+                <>
+                    <Button type="Add User" width="100%" onClick={handleDelete}>Delete</Button>
+                    <Button type="Edit" width="100%" onClick={handleEditClick}>Edit</Button>
+                </>
+            )}
             <Dialog open={openEditDialog} onClose={handleEditClose}>
                 <DialogTitle>Edit Data</DialogTitle>
                 <DialogContent>

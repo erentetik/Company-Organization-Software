@@ -23,5 +23,7 @@ export const validatePassword = (password) => {
     return errorMessages;
 };
 
+
+
 //setErrors(validatePassword(password));
 

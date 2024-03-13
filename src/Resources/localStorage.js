@@ -12,4 +12,4 @@ const LocalStorageDelete= () => {
     localStorage.removeItem("token")
 }
 
-export default LocalStorageDelete
+export default LocalStorageDelete;

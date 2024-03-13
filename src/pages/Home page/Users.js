@@ -1,23 +1,41 @@
 import DataTable from "../../components/table";
 import NavBar from "../../components/navbar";
-import { useState } from 'react';
+import { useState ,useEffect } from 'react';
 import axios from 'axios';
 import { url } from '../../components/constants';
+import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
-const Users = () => {
+const Users = (signedIn, setSignedIn) => {
+    useEffect(() => {
+        checkUser()
+    }, [])
+
+    const checkUser = () => {
+        if (!signedIn) {
+            LocalStorageDelete()
+            setSignedIn(false)
+        }
+    }
     const [showForm, setShowForm] = useState(false);
+    const [userId, setUserId] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userNameList, setUserNameList] = useState([]);
     const [email, setEmail] = useState('');
     const [name , setName] = useState('');
     const [surname, setSurname] = useState('');
     const [role, setRole] = useState('');
     const [department, setDepartment] = useState('');
+    const [showPhotoForm, setShowPhotoForm] = useState(false);
     const [company, setCompany] = useState('');
     const [roleList, setRoleList] = useState([]);
     const [departmentList, setDepartmentList] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("role");
+
+
     const columns1 = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'firstName', headerName: 'Name', width: 150 },
@@ -40,6 +58,25 @@ const Users = () => {
 
         }));
     };
+    const handlephotoClick = async() => {
+        if (showPhotoForm) {
+            setShowPhotoForm(false);
+            return;
+        }
+        setShowPhotoForm(true);
+
+        await axios.get(url + '/api/v1/user/users', {
+            headers: {
+                Authorization: token
+            }
+        }).then(response => {
+            setUserNameList(response.data);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    };
+
     const handleClick = async() => {
         if (showForm) {
             setShowForm(false);
@@ -103,23 +140,64 @@ const Users = () => {
             
      
     };
+    const uploadPhoto = async(file) => {
+        console.log(userId)
+        await axios.post(url + '/api/v1/user/' + userId +'/upload-profile-photo', {
+            userId: userId,
+            photo: file
+            }, {
+                headers: {
+                    Authorization: token,
+                }
+        }).then(response => {
+            console.log("Fetch operation was successful", response);
+            setSnackbarMessage('Photo added');
+            setSnackbarOpen(true);
+            setShowPhotoForm(false);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            setSnackbarMessage('Photo can not added');
+            setSnackbarOpen(true);
+            setShowPhotoForm(false);
+        });
+    };
+
+    const handleFileChange = (files) => {
+        const file = files[0];
+        uploadPhoto(file);
+    };
 
     return ( 
         <div>
             <NavBar />
             <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} />
-            <Button
-                  type="Add USer"
-                  width="100%"
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={handleClick}
+            {userRole === 'ROLE_ADMIN' && (
+                <>
+                        <Button
+                    type="Add User"
+                    width="100%"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, mr: 2 }} // Add margin-right to create space
+                    onClick={handleClick}
                 >
-                  Add User
+                    Add User
                 </Button>
 
-                <Dialog open={showForm} onClose={handleClick}>
-                <DialogTitle>Add City</DialogTitle>
+                <Button
+                    type="Add User"
+                    width="100%"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, ml: 2 }} // Add margin-left to create space
+                    onClick={handlephotoClick}
+                >
+                    Add Photo
+                </Button>
+                </>
+            )}
+
+                <Dialog open={showForm} onClose={handleClick} fullWidth>
+                <DialogTitle>Add User</DialogTitle>
                 <DialogContent>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -192,6 +270,54 @@ const Users = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClick}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Add</Button>
+                </DialogActions>
+            </Dialog>
+
+
+            <Dialog open={showPhotoForm} onClose={handlephotoClick}
+            fullWidth>
+                <DialogTitle>Add Photo</DialogTitle>
+                <DialogContent>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+               
+                <InputLabel id="User">User</InputLabel>
+                 <Select
+                    labelId="User"
+                    id="User"
+                    required
+                    fullWidth
+                    value={name} 
+                    label="user"
+                    onChange={(data) => 
+                        setName(data.target.value)
+                    }
+                >
+               
+                {userNameList.map((userItem) => (
+                    <MenuItem key={userItem.id} value={userItem.name}>
+                    {userItem.name + ' ' + userItem.surname}
+                    </MenuItem>
+                ))}
+                </Select>
+                <InputLabel htmlFor="photoUpload">Upload Photo</InputLabel>
+                    <input
+                        style={{ display: 'none' }}
+                        accept="image/*"
+                        id="photoUpload"
+                        multiple
+                        type="file"
+                        onChange={(event) => handleFileChange(event.target.files)}
+                    />
+                    <label htmlFor="photoUpload">
+                        <Button variant="contained" component="span">
+                            Upload
+                        </Button>
+                    </label>
+                </Box> 
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handlephotoClick}>Cancel</Button>
                     <Button onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>

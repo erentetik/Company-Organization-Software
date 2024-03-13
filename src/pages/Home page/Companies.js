@@ -35,6 +35,8 @@ const Companies = () => {
         //city: item.addressTown.city
     }));
 };
+const userRole = localStorage.getItem("role");
+
 const [showForm, setShowForm] = useState(false);
 const [name , setName] = useState('');
 const [shortName, setShortName] = useState('');
@@ -163,6 +165,8 @@ const handleChange = async() => {
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
             editData={editData} setEditData={setEditData} handleClick={handleClick} companyType={companyType} companyTypeList={companyTypeList}
             addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany}/>
+
+            {userRole === 'ROLE_ADMIN' && (
             <Button
                   type="Add Company"
                   width="100%"
@@ -174,7 +178,7 @@ const handleChange = async() => {
                 }}
                 >
                   Add Company
-                </Button>
+                </Button>)}
 
                 <Dialog open={showForm} onClose={handleShowForm}>
                 <DialogTitle>Add Company</DialogTitle>

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { AppBar, Box, Drawer, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useAuth } from './AuthContext';
 
-const NavBar = ({ role, handleSignOut }) => {
+
+const NavBar = ({ role }) => {
+
+    const { handleSignOut } = useAuth();
 
     const [open, setOpen] = useState(false);
 
@@ -36,7 +40,12 @@ const NavBar = ({ role, handleSignOut }) => {
                 </Typography>
                
                     <Box>
-                        <Button variant="contained" onClick={handleSignOut} >Sign Out</Button>
+                        <Button 
+                            variant="contained" 
+                            onClick={handleSignOut} 
+                            color="secondary">
+                            Sign Out
+                        </Button>
                     </Box>
                 
             </Toolbar>
