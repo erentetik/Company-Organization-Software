@@ -1,11 +1,15 @@
 import DataTable from "../../components/table";
 import NavBar from "../../components/navbar";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../components/constants';
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
+import { Select } from "@mui/material";
+import { MenuItem } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { InputLabel } from "@mui/material";
 
 const Companies = () => {
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
@@ -27,8 +31,8 @@ const Companies = () => {
         companyType: item.companyType,
         addressStreet: item.addressStreet,
         addressTown: item.addressTown,
-        region: item.addressTown.region,
-        city: item.addressTown.city
+       // region: item.addressTown.region,
+        //city: item.addressTown.city
     }));
 };
 const [showForm, setShowForm] = useState(false);
@@ -40,18 +44,48 @@ const [addressTown, setAddressTown] = useState('');
 const [snackbarOpen, setSnackbarOpen] = useState(false);
 const [snackbarMessage, setSnackbarMessage] = useState('');
 const token = localStorage.getItem("token");
+const [companyTypeList, setCompanyTypeList] = useState([]);
+const [addressTownList, setAddressTownList] = useState([]);
+const [editData, setEditData] = useState({});
+const [isCompany, setIsCompany] = useState(false);
 
-const handleClick = () => {
+const handleShowForm = () => {
     if (showForm) {
         setShowForm(false);
         return;
     }
     setShowForm(true);
 };
+
+const handleClick = async() => {
+    setIsCompany(true);
+    await axios.get(url + '/api/v1/companyType', {
+        headers: {
+            Authorization: token
+        }
+    }).then(response => {
+        setCompanyTypeList(response.data)
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+    await axios.get(url + '/api/v1/town', {
+        headers: {
+            Authorization: token
+        }
+    }).then(response => {
+        setAddressTownList(response.data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
+};
+
 const handleDelete = async () => {
     const ids = localStorage.getItem("selectedRowIds");
     const parsedIds = parseInt(ids);
-    await axios.delete(url + '/api/v1/region/' + ids , {
+    await axios.delete(url + '/api/v1/company/' + ids , {
         id: parsedIds,
         headers: {
             Authorization: token
@@ -69,15 +103,6 @@ const handleDelete = async () => {
 }
 const handleSubmit = async(data) => {
     data.preventDefault();
-
-    const formData = new FormData(data.target);
-    const name = formData.get("name");
-    const shortName = formData.get("shortName");
-    const companyType = formData.get("companyType");
-    const addressStreet = formData.get("addressStreet");
-    const addressTown = formData.get("addressTown");
-
-
 
     await axios.post(url + '/api/v1/company', {
         name: name,
@@ -105,21 +130,56 @@ const handleSubmit = async(data) => {
 
     });
 };
+const handleChange = async() => {
+    const ids = localStorage.getItem("selectedRowIds");
+    await axios.put(url + '/api/v1/company/' + ids , {
+        name: editData.name,
+        shortName: editData.shortName,
+        companyType: editData.companyType,
+        addressStreet: editData.addressStreet,
+        addressTown: editData.addressTown,
+        id: ids,
+
+       }, {
+        headers: {
+            Authorization: token
+        }
+
+    }).then(response => {
+        console.log("Fetch operation was successful", response);
+        setSnackbarMessage('city deleted');
+        setSnackbarOpen(true);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('city can not deleted');
+        setSnackbarOpen(true);
+    });
+}
+
     return ( 
         <div>
             <NavBar/>
-            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} />
+            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
+            editData={editData} setEditData={setEditData} handleClick={handleClick} companyType={companyType} companyTypeList={companyTypeList}
+            addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany}/>
             <Button
                   type="Add Company"
                   width="100%"
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  onClick={handleClick}
+                  onClick={() => {
+                    handleShowForm();
+                    handleClick();
+                }}
                 >
                   Add Company
                 </Button>
-            {showForm && (
-                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+                <Dialog open={showForm} onClose={handleShowForm}>
+                <DialogTitle>Add Company</DialogTitle>
+                <DialogContent>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                  <TextField
                    margin="normal"
                    required
@@ -140,16 +200,22 @@ const handleSubmit = async(data) => {
                     id="shortName"
                     onChange={(data) => setShortName(data.target.value)}
                     />
-                    <TextField
-                    margin="normal"
+                    <InputLabel id="companyType">Company Type</InputLabel>
+                 <Select
+                    labelId="companyType"
+                    id="companyType"
                     required
                     fullWidth
-                    name="companyType"
+                    value={companyType} 
                     label="companyType"
-                    type="companyType"
-                    id="companyType"
                     onChange={(data) => setCompanyType(data.target.value)}
-                    />
+                >
+                {companyTypeList.map((companyTypeItem) => (
+                    <MenuItem key={companyTypeItem.id} value={companyTypeItem.name}>
+                    {companyTypeItem.name}
+                    </MenuItem>
+                ))}
+                </Select>
                     <TextField
                     margin="normal"
                     required
@@ -160,26 +226,30 @@ const handleSubmit = async(data) => {
                     id="addressStreet"
                     onChange={(data) => setAddressStreet(data.target.value)}
                     />
-                    <TextField
-                    margin="normal"
+                     <InputLabel id="addressTown">Address Town</InputLabel>
+                 <Select
+                    labelId="addressTown"
+                    id="addressTown"
                     required
                     fullWidth
-                    name="addressTown"
+                    value={addressTown} 
                     label="addressTown"
-                    type="addressTown"
-                    id="addressTown"
                     onChange={(data) => setAddressTown(data.target.value)}
-                    />
-                 <Button
-                   type="submit"
-                   fullWidth
-                   variant="contained"
-                   sx={{ mt: 3, mb: 2 }}
-                 >
-                    Add Company
-                 </Button>
-            </Box>
-            )}
+                >
+                {addressTownList.map((addressTownItem) => (
+                    <MenuItem key={addressTownItem.id} value={addressTownItem.name}>
+                    {addressTownItem.name}
+                    </MenuItem>
+                ))}
+                </Select>    
+                </Box> 
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleShowForm}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Add</Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
      );    
 }

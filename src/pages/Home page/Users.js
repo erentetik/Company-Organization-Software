@@ -3,9 +3,7 @@ import NavBar from "../../components/navbar";
 import { useState } from 'react';
 import axios from 'axios';
 import { url } from '../../components/constants';
-import { TextField } from "@mui/material";
-import { Box } from "@mui/system";
-import { Button } from "@mui/material";
+import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 const Users = () => {
     const [showForm, setShowForm] = useState(false);
@@ -15,6 +13,8 @@ const Users = () => {
     const [role, setRole] = useState('');
     const [department, setDepartment] = useState('');
     const [company, setCompany] = useState('');
+    const [roleList, setRoleList] = useState([]);
+    const [departmentList, setDepartmentList] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const token = localStorage.getItem("token");
@@ -40,18 +40,39 @@ const Users = () => {
 
         }));
     };
-    const handleClick = () => {
+    const handleClick = async() => {
+        if (showForm) {
+            setShowForm(false);
+            return;
+        }
         setShowForm(true);
+
+        await axios.get(url + '/api/v1/role', {
+
+            headers: {
+                Authorization: token
+            }
+        }).then(response => {
+            setRoleList(response.data)
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    
+        await axios.get(url + '/api/v1/department', {
+            headers: {
+                Authorization: token
+            }
+        }).then(response => {
+            setDepartmentList(response.data)
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
     };
+
     const handleSubmit = async(data) => {
         data.preventDefault();
-
-        const formData = new FormData(data.target);
-        const email = formData.get("email");
-        const name = formData.get("name");
-        const surname = formData.get("surname");
-        const role = formData.get("role");
-        const department = formData.get("department");
 
         await axios.post(url + '/api/v1/user/users/addUser', {
             name: name,
@@ -96,9 +117,12 @@ const Users = () => {
                 >
                   Add User
                 </Button>
-            {showForm && (
-                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                 <TextField
+
+                <Dialog open={showForm} onClose={handleClick}>
+                <DialogTitle>Add City</DialogTitle>
+                <DialogContent>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <TextField
                    margin="normal"
                    required
                    fullWidth
@@ -130,41 +154,49 @@ const Users = () => {
                     id="surname"
                     onChange={(data) => setSurname(data.target.value)}
                     />
-                <TextField
-                    margin="normal"
+                <InputLabel id="Role">Role</InputLabel>
+                 <Select
+                    labelId="Role"
+                    id="Role"
                     required
                     fullWidth
-                    name="role"
-                    label="role"
-                    type="role"
-                    id="role"
+                    value={role} 
+                    label="Role"
                     onChange={(data) => setRole(data.target.value)}
-                    />
-                <TextField
-                    margin="normal"
+                >
+               
+                {roleList.map((roleItem) => (
+                    <MenuItem key={roleItem.id} value={roleItem.name}>
+                    {roleItem.name}
+                    </MenuItem>
+                ))}
+                </Select>
+                <InputLabel id="Department">Department</InputLabel>
+                 <Select
+                    labelId="Department"
+                    id="Department"
                     required
                     fullWidth
-                    name="department"
-                    label="department"
-                    type="department"
-                    id="department"
+                    value={department} 
+                    label="Department"
                     onChange={(data) => setDepartment(data.target.value)}
-                    />
-                                    
-                 <Button
-                
-                   type="submit"
-                   fullWidth
-                   variant="contained"
-                   sx={{ mt: 3, mb: 2 }}
-                 >
-                    Add User
-                 </Button>
-                 
-                
+                >
+               
+                {departmentList.map((departmentItem) => (
+                    <MenuItem key={departmentItem.id} value={departmentItem.name}>
+                    {departmentItem.name}
+                    </MenuItem>
+                ))}
+                </Select>    
+                </Box> 
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClick}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Add</Button>
+                </DialogActions>
+            </Dialog>
 
-            </Box>
-            )}
+            
         </div>
      );
 }

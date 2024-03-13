@@ -12,7 +12,6 @@ const Home = ({ signedIn, setSignedIn }) => {
     const email = localStorage.getItem("email");
     const department = localStorage.getItem("department");
     const image = localStorage.getItem("image");
-    const token = localStorage.getItem("token");
     
     useEffect(() => {
         checkUser()

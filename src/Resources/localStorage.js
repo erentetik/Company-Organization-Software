@@ -8,6 +8,8 @@ const LocalStorageDelete= () => {
     localStorage.removeItem("email")
     localStorage.removeItem("department")
     localStorage.removeItem("company")
+    localStorage.removeItem("image")
+    localStorage.removeItem("token")
 }
 
 export default LocalStorageDelete

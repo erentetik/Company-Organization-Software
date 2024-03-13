@@ -1,6 +1,6 @@
 import DataTable from "../../components/table";
 import NavBar from "../../components/navbar";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../components/constants';
 import { TextField } from "@mui/material";
@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { InputLabel } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 const Town = () => {
     const columns = [
@@ -36,14 +37,17 @@ const [cityList, setCityList] = useState([]);
 const [snackbarOpen, setSnackbarOpen] = useState(false);
 const [snackbarMessage, setSnackbarMessage] = useState('');
 const token = localStorage.getItem("token");
+const [editData, setEditData] = useState({});
 
-const handleClick = async() => {
+const handleShowForm = () => {
     if (showForm) {
         setShowForm(false);
         return;
     }
     setShowForm(true);
+};
 
+const handleClick = async() => {
     await axios.get(url + '/api/v1/region', {
 
         headers: {
@@ -66,9 +70,7 @@ const handleClick = async() => {
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
     });
-
 };
-
 
 const handleDelete = async () => {
     const ids = localStorage.getItem("selectedRowIds");
@@ -119,22 +121,51 @@ const handleSubmit = async(data) => {
         
  
 };
+const handleChange = async() => {
+    const ids = localStorage.getItem("selectedRowIds");
+    await axios.put(url + '/api/v1/town/' + ids , {
+        name: editData.name,
+        region: editData.region,
+        city: editData.city,
+        id: ids,
+        }, {
+        headers: {
+            Authorization: token
+        }
+
+    }).then(response => {
+        console.log("Fetch operation was successful", response);
+       
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        
+    });
+};
+
     return ( 
         <div>
             <NavBar/>
-            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} />
+            <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
+            editData={editData} setEditData={setEditData} regionList={regionList} cityList={cityList} handleClick={handleClick} region={region} city={city}/>
             <Button
-                  type="Add USer"
+                  type="Add User"
                   width="100%"
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  onClick={handleClick}
+                  onClick={() => {
+                    handleShowForm();
+                    handleClick();
+                }}
                 >
                   Add Town
                 </Button>
-                {showForm && (
-                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                 <TextField
+
+                <Dialog open={showForm} onClose={handleShowForm}>
+                <DialogTitle>Add City</DialogTitle>
+                <DialogContent>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <TextField
                    margin="normal"
                    required
                    fullWidth
@@ -177,22 +208,16 @@ const handleSubmit = async(data) => {
                     {citiesItem.name}
                     </MenuItem>
                 ))}
-                </Select>
-                                    
-                 <Button
-                
-                   type="submit"
-                   fullWidth
-                   variant="contained"
-                   sx={{ mt: 3, mb: 2 }}
-                 >
-                    Add Town
-                 </Button>
-                 
-                
+                </Select>    
+                </Box> 
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleShowForm}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Add</Button>
+                </DialogActions>
+            </Dialog>
 
-            </Box>
-           )}
+              
         </div>
      );    
 }
