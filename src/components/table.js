@@ -10,7 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 
-    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany}) {
+    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , companyList, roleList, departmentList , handleShowForm}) {
     const token = localStorage.getItem("token");
     const [rows, setRows] = useState([]);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -79,6 +79,31 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
 
     return (
         <div>
+             <div style={{ position: 'relative' }}>
+            {/* Add icon button */}
+            <Button
+                 style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    margin: '8px', // Adjust the margin as needed
+                    width: '32px', // Set the width to 32px
+                    height: '32px', // Set the height to 32px
+                    minWidth: '32px', // Ensure the minimum width is also 32px
+                    minHeight: '32px', // Ensure the minimum height is also 32px
+                    zIndex: 1000,
+                }}
+                variant='contained'
+                size='large'
+                onClick={() => {
+                    handleShowForm();
+                    handleClick();
+                }
+                }
+            >
+                + 
+            </Button>
+        
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
@@ -98,10 +123,11 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
             <div>
             {userRole === 'ROLE_ADMIN' && (
                 <>
-                    <Button type="Add User" width="100%" onClick={handleDelete}>Delete</Button>
-                    <Button type="Edit" width="100%" onClick={handleEditClick}>Edit</Button>
+                    <Button type="Delete" width="100%" onClick={handleDelete}>Delete</Button>
+                  
                 </>
             )}
+              <Button type="Edit" width="100%" onClick={handleEditClick}>Edit</Button>
             <Dialog open={openEditDialog} onClose={handleEditClose}>
                 <DialogTitle>Edit Data</DialogTitle>
                 <DialogContent>
@@ -178,6 +204,63 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                     ))}
                                     </Select>
                                 </div>
+                            ):  key === 'company' ? (
+                                <div>
+                                    <InputLabel id="company">Company</InputLabel>
+                                    <Select
+                                        labelId="company"
+                                        id="company"
+                                        required
+                                        fullWidth
+                                        value={editData.company || ''}
+                                        label="company"
+                                        onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
+                                    >
+                                        {companyList?.map((companyItem) => (
+                                        <MenuItem key={companyItem.id} value={companyItem.name}>
+                                        {companyItem.name}
+                                        </MenuItem> 
+                                    ))}
+                                    </Select>
+                                </div> 
+                            ):key === 'role' ? (
+                                <div>
+                                    <InputLabel id="role">Role</InputLabel>
+                                    <Select
+                                        labelId="role"
+                                        id="role"
+                                        required
+                                        fullWidth
+                                        value={editData.role || ''}
+                                        label="role"
+                                        onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
+                                    >
+                                        {roleList?.map((roleItem) => (
+                                        <MenuItem key={roleItem.id} value={roleItem.name}>
+                                        {roleItem.name}
+                                        </MenuItem> 
+                                    ))}
+                                    </Select>
+                                </div> 
+                            ):key === 'department' ? (
+                                <div>
+                                    <InputLabel id="department">Department</InputLabel>
+                                    <Select
+                                        labelId="department"
+                                        id="department"
+                                        required
+                                        fullWidth
+                                        value={editData.department || ''}
+                                        label="department"
+                                        onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
+                                    >
+                                        {departmentList?.map((departmentItem) => (
+                                        <MenuItem key={departmentItem.id} value={departmentItem.name}>
+                                        {departmentItem.name}
+                                        </MenuItem> 
+                                    ))}
+                                    </Select>
+                                </div> 
                             ):(
                                 <TextField
                                     margin="dense"
@@ -203,6 +286,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
             </Dialog>
         </div>
         }
+        </div>
         </div>
     );
 }

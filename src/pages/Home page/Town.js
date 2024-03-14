@@ -149,9 +149,8 @@ const handleChange = async() => {
         <div>
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
-            editData={editData} setEditData={setEditData} regionList={regionList} cityList={cityList} handleClick={handleClick} region={region} city={city}/>
-            {userRole === 'ROLE_ADMIN' && (
-            <Button
+            editData={editData} setEditData={setEditData} regionList={regionList} cityList={cityList} handleClick={handleClick} handleShowForm={handleShowForm} region={region} city={city}/>
+            {/* <Button
                   type="Add User"
                   width="100%"
                   variant="contained"
@@ -162,7 +161,7 @@ const handleChange = async() => {
                 }}
                 >
                   Add Town
-                </Button>)}
+                </Button> */}
 
                 <Dialog open={showForm} onClose={handleShowForm}>
                 <DialogTitle>Add City</DialogTitle>

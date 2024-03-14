@@ -164,10 +164,10 @@ const handleChange = async() => {
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
             editData={editData} setEditData={setEditData} handleClick={handleClick} companyType={companyType} companyTypeList={companyTypeList}
-            addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany}/>
+            addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany} handleShowForm={handleShowForm}/>
 
-            {userRole === 'ROLE_ADMIN' && (
-            <Button
+          
+            {/* <Button
                   type="Add Company"
                   width="100%"
                   variant="contained"
@@ -178,7 +178,7 @@ const handleChange = async() => {
                 }}
                 >
                   Add Company
-                </Button>)}
+                </Button> */}
 
                 <Dialog open={showForm} onClose={handleShowForm}>
                 <DialogTitle>Add Company</DialogTitle>

@@ -17,9 +17,10 @@ const Users = (signedIn, setSignedIn) => {
             setSignedIn(false)
         }
     }
+    const [base64String, setBase64String] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [userId, setUserId] = useState('');
-    const [userName, setUserName] = useState('');
+    const [companyList, setCompanyList] = useState([]);
     const [userNameList, setUserNameList] = useState([]);
     const [email, setEmail] = useState('');
     const [name , setName] = useState('');
@@ -32,6 +33,7 @@ const Users = (signedIn, setSignedIn) => {
     const [departmentList, setDepartmentList] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [editData, setEditData] = useState({});
     const token = localStorage.getItem("token");
     const userRole = localStorage.getItem("role");
 
@@ -48,13 +50,14 @@ const Users = (signedIn, setSignedIn) => {
     const apiUrl1 = '/api/v1/user/users';
     
     const mapUserData = (data) => {
-        return data.map((item, index) => ({
-            id: index +1,
+        return data.map((item) => ({
+            id: item.id,
             firstName: item.name,
             lastName: item.surname,
             email: item.email,
             role: item.role,
-            department: item.department
+            department: item.department,
+            company: item.company
 
         }));
     };
@@ -77,13 +80,16 @@ const Users = (signedIn, setSignedIn) => {
         });
     };
 
-    const handleClick = async() => {
+    const handleShowForm = () => {
         if (showForm) {
             setShowForm(false);
             return;
         }
         setShowForm(true);
+    };
 
+    const handleClick = async() => {
+        
         await axios.get(url + '/api/v1/role', {
 
             headers: {
@@ -106,6 +112,17 @@ const Users = (signedIn, setSignedIn) => {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
+
+        await axios.get(url + '/api/v1/company', {
+            headers: {
+                Authorization: token
+            }
+        }).then(response => {
+            setCompanyList(response.data)
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
     };
 
     const handleSubmit = async(data) => {
@@ -117,12 +134,13 @@ const Users = (signedIn, setSignedIn) => {
             email: email,
             role: role,
             department: department,
+            company: company,
             password: ''
             }, {
                 headers: {
-                    Authorization: token,
-                   
+                    Authorization: token,         
                 }
+
         }).then(response => {
             console.log("Fetch operation was successful", response);
             setSnackbarMessage('User added');
@@ -140,11 +158,31 @@ const Users = (signedIn, setSignedIn) => {
             
      
     };
-    const uploadPhoto = async(file) => {
-        console.log(userId)
-        await axios.post(url + '/api/v1/user/' + userId +'/upload-profile-photo', {
-            userId: userId,
-            photo: file
+
+    const handleDelete = async () => {
+        const ids = localStorage.getItem("selectedRowIds");
+        const parsedIds = parseInt(ids);
+        await axios.delete(url + '/api/v1/user/users/' + ids , {
+            id: parsedIds,
+            headers: {
+                Authorization: token
+            }
+        }).then(response => {
+            console.log("Fetch operation was successful", response);
+         
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    const uploadPhoto = async() => {
+        const ids = localStorage.getItem("selectedRowIds");
+        const parsedIds = parseInt(ids);
+        const base64WithoutPrefix = base64String.split(',')[1];
+
+        await axios.post(url + '/api/v1/user/' + ids +'/upload-profile-photo', {
+            id: parsedIds,
+            photo: base64WithoutPrefix
             }, {
                 headers: {
                     Authorization: token,
@@ -162,27 +200,64 @@ const Users = (signedIn, setSignedIn) => {
             setShowPhotoForm(false);
         });
     };
-
     const handleFileChange = (files) => {
-        const file = files[0];
-        uploadPhoto(file);
+        const file = files[0]; 
+    
+        if (file) {
+            const reader = new FileReader();
+    
+            reader.onload = (e) => {
+                setBase64String(e.target.result); 
+                           };
+            reader.readAsDataURL(file); 
+        }
     };
+    const handleChange = async() => {
+        const ids = localStorage.getItem("selectedRowIds");
+        await axios.put(url + '/api/v1/user/users/' + ids , {
+            name: editData.firstName,
+            surname: editData.lastName,
+            email: editData.email,
+            role: editData.role,
+            department: editData.department,
+            company: editData.company,
+            id: ids,
+            }, {
+            headers: {
+                Authorization: token
+            }
+    
+        }).then(response => {
+            console.log("Fetch operation was successful", response);
+           
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            
+        });
+    };
+    
 
     return ( 
         <div>
             <NavBar />
-            <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} />
-            {userRole === 'ROLE_ADMIN' && (
-                <>
+            <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} setEditData={setEditData} handleClick={handleClick} companyList={companyList}
+            editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} />
+            
+                {/* <>
                         <Button
                     type="Add User"
                     width="100%"
                     variant="contained"
                     sx={{ mt: 3, mb: 2, mr: 2 }} // Add margin-right to create space
-                    onClick={handleClick}
+                    onClick={() => {
+                        handleShowForm();
+                        handleClick();
+                    }
+                }
                 >
                     Add User
-                </Button>
+                </Button> */}
 
                 <Button
                     type="Add User"
@@ -193,8 +268,8 @@ const Users = (signedIn, setSignedIn) => {
                 >
                     Add Photo
                 </Button>
-                </>
-            )}
+                
+            
 
                 <Dialog open={showForm} onClose={handleClick} fullWidth>
                 <DialogTitle>Add User</DialogTitle>
@@ -249,6 +324,23 @@ const Users = (signedIn, setSignedIn) => {
                     </MenuItem>
                 ))}
                 </Select>
+                <InputLabel id="company">Company</InputLabel>
+                 <Select
+                    labelId="company"
+                    id="company"
+                    required
+                    fullWidth
+                    value={company} 
+                    label="company"
+                    onChange={(data) => setCompany(data.target.value)}
+                >
+               
+                {companyList.map((companyItem) => (
+                    <MenuItem key={companyItem.id} value={companyItem.name}>
+                    {companyItem.name}
+                    </MenuItem>
+                ))}
+                </Select>
                 <InputLabel id="Department">Department</InputLabel>
                  <Select
                     labelId="Department"
@@ -269,7 +361,7 @@ const Users = (signedIn, setSignedIn) => {
                 </Box> 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClick}>Cancel</Button>
+                    <Button onClick={handleShowForm}>Cancel</Button>
                     <Button onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
@@ -282,24 +374,28 @@ const Users = (signedIn, setSignedIn) => {
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                
                 <InputLabel id="User">User</InputLabel>
-                 <Select
-                    labelId="User"
-                    id="User"
-                    required
-                    fullWidth
-                    value={name} 
-                    label="user"
-                    onChange={(data) => 
-                        setName(data.target.value)
+                <Select
+                labelId="User"
+                id="User"
+                required
+                fullWidth
+                value={userId} 
+                label="user"
+                onChange={(event) => {
+                    const userId = event.target.value;
+                    setUserId(userId);
+                    const selectedUser = userNameList.find(userItem => userItem.id === userId);
+                    if (selectedUser) {
+                        setName(selectedUser.name);
                     }
-                >
-               
+                }}
+            >
                 {userNameList.map((userItem) => (
-                    <MenuItem key={userItem.id} value={userItem.name}>
-                    {userItem.name + ' ' + userItem.surname}
+                    <MenuItem key={userItem.id} value={userItem.id}>
+                        {userItem.name + ' ' + userItem.surname}
                     </MenuItem>
                 ))}
-                </Select>
+            </Select>
                 <InputLabel htmlFor="photoUpload">Upload Photo</InputLabel>
                     <input
                         style={{ display: 'none' }}
@@ -318,7 +414,7 @@ const Users = (signedIn, setSignedIn) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handlephotoClick}>Cancel</Button>
-                    <Button onClick={handleSubmit}>Add</Button>
+                    <Button onClick={uploadPhoto}>Add</Button>
                 </DialogActions>
             </Dialog>
 

@@ -16,8 +16,6 @@ const userCheck = () => {
                 setSignedIn(false);
             }
         };
-        
-       
     };
 
     return EnhancedComponent;

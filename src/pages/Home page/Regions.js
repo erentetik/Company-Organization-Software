@@ -60,10 +60,6 @@ const handleDelete = async () => {
 const handleSubmit = async(data) => {
     data.preventDefault();
 
-    const formData = new FormData(data.target);
-    const name = formData.get("name");
-
-
     await axios.post(url + '/api/v1/region', {
         name: name,
         }, {
@@ -105,9 +101,8 @@ const handleChange = async() => {
         <div>
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
-            editData={editData} setEditData={setEditData} handleClick={handleClick}/>
-            {userRole === 'ROLE_ADMIN' && (
-            <Button
+            editData={editData} setEditData={setEditData} handleClick={handleClick} handleShowForm={handleShowForm}/>
+            {/* <Button
                   type="Add User"
                   width="100%"
                   variant="contained"
@@ -115,7 +110,7 @@ const handleChange = async() => {
                   onClick={handleShowForm}
                 >
                   Add Region
-                </Button>)}
+                </Button> */}
 
                 <Dialog open={showForm} onClose={handleShowForm}>
                 <DialogTitle>Add City</DialogTitle>
