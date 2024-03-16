@@ -120,7 +120,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                variant='contained'
                size='large'
                onClick={() => {
-                   handleChange();
+                   handleEditClick();
                }}
            >
                Edit
