@@ -35,7 +35,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
         };
 
         fetchData();
-    }, [apiUrl, token, mapper]);
+    }, [apiUrl]);
 
     
     const handleRowSelection = (selection) => {
