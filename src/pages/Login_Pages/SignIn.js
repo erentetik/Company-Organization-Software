@@ -16,7 +16,7 @@ import axios from 'axios';
 import { MAIL_REGEX } from '../../components/constants';
 import { url } from '../../components/constants';
 
-function SignIn({ setSignedIn }) {
+function SignIn({ setSignedIn, signedIn }) {
   const defaultTheme = createTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,7 +58,7 @@ function SignIn({ setSignedIn }) {
         localStorage.setItem("image", response.data.userDto.image);
         localStorage.setItem("token", response.data.token);
         setSignedIn(true); 
-        localStorage.setItem("signedIn", SignIn);
+        localStorage.setItem("signedIn", signedIn);
         console.log(response.data.userDto.company);
       })
       .catch(error => {

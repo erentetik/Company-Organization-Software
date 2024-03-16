@@ -10,6 +10,7 @@ const LocalStorageDelete= () => {
     localStorage.removeItem("company")
     localStorage.removeItem("image")
     localStorage.removeItem("token")
+    localStorage.removeItem("signedIn")
 }
 
 export default LocalStorageDelete;

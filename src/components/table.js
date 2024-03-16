@@ -143,7 +143,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                         handleClick();
                     }}
                 >
-                    Add
+                    Add 
                 </Button>
             </div>
         

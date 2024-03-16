@@ -7,6 +7,7 @@ import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 const Users = (signedIn, setSignedIn) => {
+
     useEffect(() => {
         checkUser()
     }, [])
@@ -18,7 +19,6 @@ const Users = (signedIn, setSignedIn) => {
         }
     }
     const [file, setFile] = useState(null);
-    const [base64String, setBase64String] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [userId, setUserId] = useState('');
     const [companyList, setCompanyList] = useState([]);
@@ -265,10 +265,6 @@ const Users = (signedIn, setSignedIn) => {
                 </Button>
                 )}
                
-                
-                
-            
-
                 <Dialog open={showForm} onClose={handleClick} fullWidth>
                 <DialogTitle>Add User</DialogTitle>
                 <DialogContent>
