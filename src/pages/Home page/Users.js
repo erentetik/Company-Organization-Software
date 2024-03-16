@@ -17,6 +17,7 @@ const Users = (signedIn, setSignedIn) => {
             setSignedIn(false)
         }
     }
+    const [file, setFile] = useState(null);
     const [base64String, setBase64String] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [userId, setUserId] = useState('');
@@ -175,43 +176,34 @@ const Users = (signedIn, setSignedIn) => {
             console.error('There was a problem with the fetch operation:', error);
         });
     }
-    const uploadPhoto = async() => {
-        const ids = localStorage.getItem("selectedRowIds");
-        const parsedIds = parseInt(ids);
-        const base64WithoutPrefix = base64String.split(',')[1];
+    const uploadPhoto = async () => {
 
-        await axios.post(url + '/api/v1/user/' + ids +'/upload-profile-photo', {
-            id: parsedIds,
-            photo: base64WithoutPrefix
-            }, {
+        const ids = userId;
+        let formData = new FormData();
+        formData.append('photo', file);
+
+        if (!file) {
+            console.error('No file selected');
+            return;
+        }
+    
+        try {
+            const response = await axios.post(url + '/api/v1/user/' + ids + '/upload-profile-photo', {
+                id: ids,
+                photo: file,
+
+                 }, {
                 headers: {
-                    Authorization: token,
+                    Authorization: token
                 }
-        }).then(response => {
-            console.log("Fetch operation was successful", response);
-            setSnackbarMessage('Photo added');
-            setSnackbarOpen(true);
-            setShowPhotoForm(false);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-            setSnackbarMessage('Photo can not added');
-            setSnackbarOpen(true);
-            setShowPhotoForm(false);
-        });
-    };
-    const handleFileChange = (files) => {
-        const file = files[0]; 
+            });
     
-        if (file) {
-            const reader = new FileReader();
-    
-            reader.onload = (e) => {
-                setBase64String(e.target.result); 
-                           };
-            reader.readAsDataURL(file); 
+            console.log('Image uploaded successfully:', response.data);
+        } catch (error) {
+            console.error('Error uploading image:', error);
         }
     };
+   
     const handleChange = async() => {
         const ids = localStorage.getItem("selectedRowIds");
         await axios.put(url + '/api/v1/user/users/' + ids , {
@@ -403,7 +395,7 @@ const Users = (signedIn, setSignedIn) => {
                         id="photoUpload"
                         multiple
                         type="file"
-                        onChange={(event) => handleFileChange(event.target.files)}
+                        onChange={(data) => setFile(data.target.value)}
                     />
                     <label htmlFor="photoUpload">
                         <Button variant="contained" component="span">

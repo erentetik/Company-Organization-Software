@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from './AuthContext';
 
 
-const NavBar = ({ role }) => {
+const NavBar = () => {
 
     const { handleSignOut } = useAuth();
 
@@ -51,7 +51,7 @@ const NavBar = ({ role }) => {
             </Toolbar>
             <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
                 <List>
-                    {['Home', ...(role !== 'ROLE_USER' ? ['Users'] : []), 'Companies', 'Cities', 'Regions', 'Towns'].map(
+                    {['Home', 'Users', 'Companies', 'Cities', 'Regions', 'Towns'].map(
                         (text) => (
                             <ListItem button key={text} onClick={() => navigateTo(text)}>
                                 <ListItemText primary={text} />

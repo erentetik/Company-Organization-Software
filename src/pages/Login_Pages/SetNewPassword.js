@@ -70,7 +70,9 @@ function SetNewPassword() {
         
           }).catch((error) => {
               console.log("There was a problem with the fetch operation:", error);
+
           });
+          
           navigate("/");
       }
   };

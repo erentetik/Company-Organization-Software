@@ -28,9 +28,7 @@ function App() {
                     :
                     <Navigate to="/" replace />
                 } />
-              <Route exact path="/" element=
-                  {signedIn ? <Navigate to="/home" replace /> : <SignIn setSignedIn={setSignedIn} />}
-              />
+              <Route path="/" element={<SignIn />} />
               <Route path="/ResetPassword" element={<ResetPassword />} />
               <Route path="/ActivateUser" element={<ActivateUser />} />
               <Route path="setNewPassword/:token" element={<SetNewPassword />} />

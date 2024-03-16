@@ -79,30 +79,73 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
 
     return (
         <div>
-             <div style={{ position: 'relative' }}>
-            {/* Add icon button */}
-            <Button
-                 style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    margin: '8px', // Adjust the margin as needed
-                    width: '32px', // Set the width to 32px
-                    height: '32px', // Set the height to 32px
-                    minWidth: '32px', // Ensure the minimum width is also 32px
-                    minHeight: '32px', // Ensure the minimum height is also 32px
-                    zIndex: 1000,
-                }}
-                variant='contained'
-                size='large'
-                onClick={() => {
-                    handleShowForm();
-                    handleClick();
-                }
-                }
-            >
-                + 
-            </Button>
+             <div style={{ position: 'relative', display: 'inline-block' , justifyContent: 'flex-end'}}>
+             {showButton && 
+             <>
+                {userRole === 'ROLE_ADMIN' && (
+                    
+                <Button
+                     style={{
+                        margin: '8px',
+                        width: '64px',
+                        height: '32px',
+                        minWidth: '32px',
+                        minHeight: '32px',
+                        fontSize: '12px',
+                        color: 'white',
+                        backgroundColor: 'red'
+    
+                    }}
+                    variant='contained'
+                    size='large'
+                    onClick={() => {
+                        handleDelete();
+                    }}
+                >
+                    Delete
+                </Button>
+                )}
+           
+                <Button
+                style={{
+                   margin: '8px',
+                   width: '64px',
+                   height: '32px',
+                   minWidth: '32px',
+                   minHeight: '32px',
+                   fontSize: '12px',
+                   color: 'white',
+
+               }}
+               variant='contained'
+               size='large'
+               onClick={() => {
+                   handleDelete();
+               }}
+           >
+               Edit
+           </Button>
+           </>
+            }
+                <Button
+                     style={{
+                        margin: '8px',
+                        width: '32px',
+                        height: '32px',
+                        minWidth: '32px',
+                        minHeight: '32px',
+                        fontSize: '12px',
+                    }}
+                    variant='contained'
+                    size='large'
+                    onClick={() => {
+                        handleShowForm();
+                        handleClick();
+                    }}
+                >
+                    Add
+                </Button>
+            </div>
         
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
@@ -121,13 +164,13 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
             </div>
             {showButton && 
             <div>
-            {userRole === 'ROLE_ADMIN' && (
+            {/* {userRole === 'ROLE_ADMIN' && (
                 <>
                     <Button type="Delete" width="100%" onClick={handleDelete}>Delete</Button>
                   
                 </>
-            )}
-              <Button type="Edit" width="100%" onClick={handleEditClick}>Edit</Button>
+            )} */}
+              {/* <Button type="Edit" width="100%" onClick={handleEditClick}>Edit</Button> */}
             <Dialog open={openEditDialog} onClose={handleEditClose}>
                 <DialogTitle>Edit Data</DialogTitle>
                 <DialogContent>
@@ -178,7 +221,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         fullWidth
                                         value={editData.companyType || ''}
                                         label="companyType"
-                                        onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
+                                            onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {companyTypeList?.map(companyTypeItem => (
                                             <MenuItem key={companyTypeItem.id} value={companyTypeItem.name}>{companyTypeItem.name}</MenuItem>
@@ -286,7 +329,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
             </Dialog>
         </div>
         }
-        </div>
+ 
         </div>
     );
 }
