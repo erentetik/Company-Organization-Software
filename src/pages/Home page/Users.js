@@ -190,11 +190,13 @@ const Users = (signedIn, setSignedIn) => {
         try {
             const response = await axios.post(url + '/api/v1/user/' + ids + '/upload-profile-photo', {
                 id: ids,
-                photo: file,
+
+                photo: file
 
                  }, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    'Content-Type': 'multipart/form-data'
                 }
             });
     
@@ -250,7 +252,8 @@ const Users = (signedIn, setSignedIn) => {
                 >
                     Add User
                 </Button> */}
-
+                 
+                {userRole === 'ROLE_ADMIN' && (
                 <Button
                     type="Add User"
                     width="100%"
@@ -260,6 +263,9 @@ const Users = (signedIn, setSignedIn) => {
                 >
                     Add Photo
                 </Button>
+                )}
+               
+                
                 
             
 
@@ -358,7 +364,7 @@ const Users = (signedIn, setSignedIn) => {
                 </DialogActions>
             </Dialog>
 
-
+            
             <Dialog open={showPhotoForm} onClose={handlephotoClick}
             fullWidth>
                 <DialogTitle>Add Photo</DialogTitle>
@@ -395,7 +401,7 @@ const Users = (signedIn, setSignedIn) => {
                         id="photoUpload"
                         multiple
                         type="file"
-                        onChange={(data) => setFile(data.target.value)}
+                        onChange={(data) => setFile(data.target.files[0])}
                     />
                     <label htmlFor="photoUpload">
                         <Button variant="contained" component="span">
@@ -406,7 +412,11 @@ const Users = (signedIn, setSignedIn) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handlephotoClick}>Cancel</Button>
-                    <Button onClick={uploadPhoto}>Add</Button>
+                    <Button onClick={() => {
+                        uploadPhoto();
+                        handlephotoClick();
+                    }}
+                    >Add</Button>
                 </DialogActions>
             </Dialog>
 

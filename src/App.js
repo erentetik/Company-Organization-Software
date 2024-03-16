@@ -15,7 +15,7 @@ import { AuthProvider } from './components/AuthContext';
 
 function App() {
 
-  const [signedIn, setSignedIn] = useState(localStorage.getItem("signedIn") != null)
+  const [signedIn, setSignedIn] = useState(localStorage.getItem("signedIn") );
 
   return (
     <AuthProvider setSignedIn={setSignedIn}>
@@ -28,7 +28,9 @@ function App() {
                     :
                     <Navigate to="/" replace />
                 } />
-              <Route path="/" element={<SignIn />} />
+              <Route exact path="/" element=
+                  {signedIn ? <Navigate to="/home" replace /> : <SignIn setSignedIn={setSignedIn} />}
+              />
               <Route path="/ResetPassword" element={<ResetPassword />} />
               <Route path="/ActivateUser" element={<ActivateUser />} />
               <Route path="setNewPassword/:token" element={<SetNewPassword />} />
