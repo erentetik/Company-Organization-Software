@@ -164,7 +164,7 @@ const handleChange = async() => {
                 </Button> */}
 
                 <Dialog open={showForm} onClose={handleShowForm}>
-                <DialogTitle>Add City</DialogTitle>
+                <DialogTitle>Add Town</DialogTitle>
                 <DialogContent>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
