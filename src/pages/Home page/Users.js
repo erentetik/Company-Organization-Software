@@ -5,8 +5,13 @@ import axios from 'axios';
 import { url } from '../../components/constants';
 import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const Users = (signedIn, setSignedIn) => {
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+      };
 
     useEffect(() => {
         checkUser()
@@ -21,6 +26,7 @@ const Users = (signedIn, setSignedIn) => {
     const [file, setFile] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [userId, setUserId] = useState('');
+    const [selectedFileName, setSelectedFileName] = useState('');
     const [companyList, setCompanyList] = useState([]);
     const [userNameList, setUserNameList] = useState([]);
     const [email, setEmail] = useState('');
@@ -170,18 +176,22 @@ const Users = (signedIn, setSignedIn) => {
             }
         }).then(response => {
             console.log("Fetch operation was successful", response);
+            setSnackbarMessage('User deleted');
+            setSnackbarOpen(true);
+        
          
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
+            setSnackbarMessage('User can not deleted');
+            setSnackbarOpen(true);
         });
     }
     const uploadPhoto = async () => {
-
         const ids = userId;
         let formData = new FormData();
         formData.append('photo', file);
-
+    
         if (!file) {
             console.error('No file selected');
             return;
@@ -190,10 +200,8 @@ const Users = (signedIn, setSignedIn) => {
         try {
             const response = await axios.post(url + '/api/v1/user/' + ids + '/upload-profile-photo', {
                 id: ids,
-
                 photo: file
-
-                 }, {
+            }, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'multipart/form-data'
@@ -201,8 +209,13 @@ const Users = (signedIn, setSignedIn) => {
             });
     
             console.log('Image uploaded successfully:', response.data);
+            setSnackbarMessage('Image uploaded successfully');
+            setSnackbarOpen(true);
+            setSelectedFileName(file.name); // Set the selected file name
         } catch (error) {
             console.error('Error uploading image:', error);
+            setSnackbarMessage('Error uploading image');
+            setSnackbarOpen(true);
         }
     };
    
@@ -223,10 +236,16 @@ const Users = (signedIn, setSignedIn) => {
     
         }).then(response => {
             console.log("Fetch operation was successful", response);
+            setSnackbarMessage('User updated');
+            setSnackbarOpen(true);
+
            
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
+            setSnackbarMessage('User can not updated');
+            setSnackbarOpen(true);
+
             
         });
     };
@@ -397,13 +416,19 @@ const Users = (signedIn, setSignedIn) => {
                         id="photoUpload"
                         multiple
                         type="file"
-                        onChange={(data) => setFile(data.target.files[0])}
+                        onChange={(data) => {
+                            setFile(data.target.files[0]);
+                            setSelectedFileName(data.target.files[0]?.name); // Set the selected file name
+                        }}
                     />
                     <label htmlFor="photoUpload">
                         <Button variant="contained" component="span">
                             Upload
                         </Button>
-                    </label>
+                      </label>
+                      {selectedFileName && (
+                        <p>Selected File: {selectedFileName}</p> // Display the selected file name
+                    )}
                 </Box> 
                 </DialogContent>
                 <DialogActions>
@@ -415,6 +440,17 @@ const Users = (signedIn, setSignedIn) => {
                     >Add</Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
 
             
         </div>

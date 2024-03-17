@@ -10,8 +10,13 @@ import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const Town = () => {
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+        };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'name', headerName: 'Name', width: 150 },
@@ -84,12 +89,12 @@ const handleDelete = async () => {
         }
     }).then(response => {
         console.log("Fetch operation was successful", response);
-        setSnackbarMessage('region deleted');
+        setSnackbarMessage('Town deleted');
         setSnackbarOpen(true);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('region can not deleted');
+        setSnackbarMessage('Town can not deleted');
         setSnackbarOpen(true);
     });
 }
@@ -108,13 +113,13 @@ const handleSubmit = async(data) => {
             }
     }).then(response => {
         console.log("Fetch operation was successful", response);
-        setSnackbarMessage('User added');
+        setSnackbarMessage('Town added');
         setSnackbarOpen(true);
         setShowForm(false);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('User can not added');
+        setSnackbarMessage('Town can not added');
         setSnackbarOpen(true);
         setShowForm(false);
 
@@ -137,10 +142,14 @@ const handleChange = async() => {
 
     }).then(response => {
         console.log("Fetch operation was successful", response);
+        setSnackbarMessage('Town updated');
+        setSnackbarOpen(true);
        
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('Town can not updated');
+        setSnackbarOpen(true);
         
     });
 };
@@ -218,7 +227,17 @@ const handleChange = async() => {
                     <Button onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
-
+            <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
               
         </div>
      );    

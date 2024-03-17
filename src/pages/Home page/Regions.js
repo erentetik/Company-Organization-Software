@@ -7,8 +7,14 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const Regions = () => {
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+      }
+      
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Name', width: 150 , editable: true},
   ];
@@ -68,10 +74,14 @@ const handleSubmit = async(data) => {
             }
     }).then(response => {
         console.log("Fetch operation was successful", response);
+        setSnackbarMessage('region added');
+        setSnackbarOpen(true);
         setShowForm(false);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('region can not added');
+        setSnackbarOpen(true);
         setShowForm(false);
     });
 };
@@ -88,12 +98,12 @@ const handleChange = async() => {
 
     }).then(response => {
         console.log("Fetch operation was successful", response);
-        setSnackbarMessage('city deleted');
+        setSnackbarMessage('Region deleted');
         setSnackbarOpen(true);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('city can not deleted');
+        setSnackbarMessage('Region can not deleted');
         setSnackbarOpen(true);
     });
 }
@@ -133,6 +143,17 @@ const handleChange = async() => {
                     <Button onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
                 
         </div>
      );    

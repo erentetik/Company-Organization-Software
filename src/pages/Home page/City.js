@@ -5,8 +5,15 @@ import axios from 'axios';
 import { url } from '../../components/constants';
 import { Box } from "@mui/system";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+
 
 const City = () => {
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+      };
+      
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Name', width: 150 },
   ];
@@ -97,10 +104,15 @@ const handleChange = async() => {
 
     }).then(response => {
         console.log("Fetch operation was successful", response);
+        setSnackbarMessage('city updated');
+        setSnackbarOpen(true);
+
        
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        setSnackbarMessage('city can not updated');
+        setSnackbarOpen(true);
         
     });
 }
@@ -142,6 +154,17 @@ const handleChange = async() => {
                     <Button onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <SnackbarContent message={snackbarMessage} />
+          </Snackbar>
             
         </div>
      );    
