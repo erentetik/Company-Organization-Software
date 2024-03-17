@@ -10,7 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 
-    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , companyList, roleList, departmentList , handleShowForm}) {
+    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , companyList, roleList, departmentList , handleShowForm, handlephotoClick}) {
     const token = localStorage.getItem("token");
     const [rows, setRows] = useState([]);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -83,7 +83,28 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
              {showButton && 
              <>
                 {userRole === 'ROLE_ADMIN' && (
-                    
+                <>
+                    <Button
+                    style={{
+                       margin: '8px',
+                       width: '120px',
+                       height: '32px',
+                       minWidth: '32px',
+                       minHeight: '32px',
+                       fontSize: '12px',
+                       color: 'white',
+                      
+   
+                   }}
+                   variant='contained'
+                   size='large'
+                   onClick={() => {
+                       handlephotoClick();
+                   }}
+               >
+                   Add Photo
+               </Button>
+               
                 <Button
                      style={{
                         margin: '8px',
@@ -104,7 +125,9 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                 >
                     Delete
                 </Button>
+                </>
                 )}
+
            
                 <Button
                 style={{
@@ -126,6 +149,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                Edit
            </Button>
            </>
+
             }
                 <Button
                      style={{

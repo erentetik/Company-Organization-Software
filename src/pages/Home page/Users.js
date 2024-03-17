@@ -255,7 +255,7 @@ const Users = (signedIn, setSignedIn) => {
         <div>
             <NavBar />
             <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} setEditData={setEditData} handleClick={handleClick} companyList={companyList}
-            editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} />
+            editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} handlephotoClick={handlephotoClick}/>
             
                 {/* <>
                         <Button
@@ -272,7 +272,7 @@ const Users = (signedIn, setSignedIn) => {
                     Add User
                 </Button> */}
                  
-                {userRole === 'ROLE_ADMIN' && (
+                {/* {userRole === 'ROLE_ADMIN' && (
                 <Button
                     type="Add User"
                     width="100%"
@@ -282,7 +282,7 @@ const Users = (signedIn, setSignedIn) => {
                 >
                     Add Photo
                 </Button>
-                )}
+                )} */}
                
                 <Dialog open={showForm} onClose={handleClick} fullWidth>
                 <DialogTitle>Add User</DialogTitle>
