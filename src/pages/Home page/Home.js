@@ -4,6 +4,7 @@ import { Container, Box, Typography, Button, Paper } from "@mui/material";
 import LocalStorageDelete from "../../Resources/localStorage";
 import NavBar from "../../components/navbar";
 import { useAuth } from "../../components/AuthContext";
+import { Margin } from "@mui/icons-material";
 
 
 
@@ -51,7 +52,7 @@ const Home = ({ signedIn, setSignedIn }) => {
             <Box mt={4} display="flex" justifyContent="center">
                 <Paper elevation={3} style={{ padding: '20px', maxWidth: '500px' }}>
                     <Typography variant="h3" align="center">User Information</Typography>
-                    <img src={imageUrl} alt="User" style={{ width: '50%', borderRadius: '50%', marginBottom: '20px' }} />
+                    <img src={imageUrl} alt="User" style={{ width: '70%', borderRadius: '50%', marginBottom: '20px', marginLeft:'75px'  }} />
                     <Typography variant="body1">Name: {name}</Typography>
                     <Typography variant="body1">Surname: {surname}</Typography>
                     <Typography variant="body1">Role: {role}</Typography>
