@@ -85,7 +85,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                Sign In
+                {translations[language]['signIn']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
