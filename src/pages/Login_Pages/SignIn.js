@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { MAIL_REGEX } from '../../components/constants';
 import { url } from '../../components/constants';
-import translations from '../../Resources/translations';
+import Translations from '../../Resources/translations';
 
 function SignIn({ setSignedIn, signedIn, language }) {
 
@@ -38,7 +38,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
           const password = formData.get("password");
 
       if (!MAIL_REGEX.test(email)) {
-          setError(translations[language]['invalidEmail']);
+          setError(Translations[language]['invalidEmail']);
           return;
       }
       setError(''); 
@@ -49,7 +49,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
         password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(translations[language]['loginSuccess']);
+        setSnackbarMessage(Translations[language]['loginSuccess']);
         setSnackbarOpen(true);
         localStorage.setItem("name", response.data.userDto.name);
         localStorage.setItem("surname", response.data.userDto.surname);
@@ -64,7 +64,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(translations[language]['loginFailed']);
+        setSnackbarMessage(Translations[language]['loginFailed']);
         setSnackbarOpen(true);
         
       });
@@ -84,7 +84,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                {translations[language]['signIn']}
+                {Translations[language]['signIn']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -92,7 +92,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
                   required
                   fullWidth
                   id="email"
-                  label={translations[language]['emailAddress']}
+                  label={Translations[language]['emailAddress']}
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -105,7 +105,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
                   required
                   fullWidth
                   name="password"
-                  label={translations[language]['password']}
+                  label={Translations[language]['password']}
                   type="password"
                   id="password"
                   onChange={(data) => setPassword(data.target.value)}
@@ -118,14 +118,14 @@ function SignIn({ setSignedIn, signedIn, language }) {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {translations[language]['signIn']}
+                  {Translations[language]['signIn']}
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <NavigateButton to="/ResetPassword" buttonText={translations[language]['resetPassword']}/>
+                    <NavigateButton to="/ResetPassword" buttonText={Translations[language]['resetPassword']}/>
                   </Grid>
                   <Grid item>
-                    <NavigateButton to="/ActivateUser" buttonText={translations[language]['activateUser']}/>
+                    <NavigateButton to="/ActivateUser" buttonText={Translations[language]['activateUser']}/>
                   </Grid>
                 </Grid>
               </Box>

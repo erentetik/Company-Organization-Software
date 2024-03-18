@@ -1,4 +1,4 @@
-const translations = {
+const Translations = {
     en: {
         loginSuccessMessage: 'Login Successful',
         loginFailedMessage: 'Login failed',
@@ -136,4 +136,4 @@ const translations = {
     }
 };
 
-export default translations;
+export default Translations;

@@ -12,20 +12,20 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { InputLabel } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import translations from "../../Resources/translations";
+import Translations from "../../Resources/translations";
 
 const Companies = ({ language }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
         };
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: translations[language]['name'], width: 150 },
-    { field: 'shortName', headerName: translations[language]['shortName'], width: 150 },
-    { field: 'companyType', headerName: translations[language]['companyType'], width: 150, valueGetter: (params) => params.row.companyType.name },
-    { field: 'addressStreet', headerName: translations[language]['addressStreet'], width: 150 },
-    { field: 'addressTown', headerName: translations[language]['addressTown'], width: 150, valueGetter: (params) => params.row.addressTown.name },
-    { field: 'region', headerName: translations[language]['region'], width: 150, valueGetter: (params) => params.row.addressTown.region.name },
-    { field: 'city', headerName: translations[language]['city'], width: 150, valueGetter: (params) => params.row.addressTown.city.name }
+    { field: 'name', headerName: Translations[language]['name'], width: 150 },
+    { field: 'shortName', headerName: Translations[language]['shortName'], width: 150 },
+    { field: 'companyType', headerName: Translations[language]['companyType'], width: 150, valueGetter: (params) => params.row.companyType.name },
+    { field: 'addressStreet', headerName: Translations[language]['addressStreet'], width: 150 },
+    { field: 'addressTown', headerName: Translations[language]['addressTown'], width: 150, valueGetter: (params) => params.row.addressTown.name },
+    { field: 'region', headerName: Translations[language]['region'], width: 150, valueGetter: (params) => params.row.addressTown.region.name },
+    { field: 'city', headerName: Translations[language]['city'], width: 150, valueGetter: (params) => params.row.addressTown.city.name }
   ];
   const apiUrl = '/api/v1/company';
 

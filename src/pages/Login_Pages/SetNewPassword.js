@@ -12,7 +12,7 @@ import { validatePassword } from '../../components/constants';
 import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import translations from '../../Resources/translations';
+import Translations from '../../Resources/translations';
 
 
 function SetNewPassword({ language }) {
@@ -35,11 +35,11 @@ function SetNewPassword({ language }) {
        .then((response) => {
            setValid(true);
            console.log("token operation was successful", response);
-           setSnackbarMessage(translations[language]['successfull']);
+           setSnackbarMessage(Translations[language]['successfull']);
            setSnackbarOpen(true);
          }).catch((error) => {
             console.error('There was a problem with the token operation:', error);
-            setSnackbarMessage(translations[language]['anErrorOccured']);
+            setSnackbarMessage(Translations[language]['anErrorOccured']);
             setSnackbarOpen(true);
             navigate("/");
            });
@@ -94,7 +94,7 @@ function SetNewPassword({ language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                {translations[language]['enterNewPassword']}
+                {Translations[language]['enterNewPassword']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -102,7 +102,7 @@ function SetNewPassword({ language }) {
                   required
                   fullWidth
                   id="password"
-                  label={translations[language]['password']}
+                  label={Translations[language]['password']}
                   name="password"
                   type="password"
                   value={password}
@@ -117,7 +117,7 @@ function SetNewPassword({ language }) {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {translations[language]['setNewPassword']}
+                  {Translations[language]['setNewPassword']}
                 </Button>
               </Box>
             </Box>

@@ -7,7 +7,7 @@ import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import translations from "../../Resources/translations";
+import Translations from "../../Resources/translations";
 
 const Users = ({signedIn, setSignedIn, language }) => {
     const handleSnackbarClose = () => {
@@ -49,12 +49,12 @@ const Users = ({signedIn, setSignedIn, language }) => {
 
     const columns1 = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: translations[language]['name'], width: 150 },
-        { field: 'lastName', headerName: translations[language]['surname'], width: 150 },
-        {field: 'email', headerName: translations[language]['email'], width: 250},
-          {field: 'role', headerName: translations[language]['role'], width: 150},
-          {field: 'department', headerName: translations[language]['department'], width: 150},
-          {field: 'company', headerName: translations[language]['company'], width: 150}
+        { field: 'firstName', headerName: Translations[language]['name'], width: 150 },
+        { field: 'lastName', headerName: Translations[language]['surname'], width: 150 },
+        {field: 'email', headerName: Translations[language]['email'], width: 250},
+          {field: 'role', headerName: Translations[language]['role'], width: 150},
+          {field: 'department', headerName: Translations[language]['department'], width: 150},
+          {field: 'company', headerName: Translations[language]['company'], width: 150}
       ];
     const apiUrl1 = '/api/v1/user/users';
     

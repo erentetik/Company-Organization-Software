@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import translations from "../../Resources/translations";
+import Translations from "../../Resources/translations";
 
 const Regions = ({ language }) => {
     const handleSnackbarClose = () => {
@@ -17,7 +17,7 @@ const Regions = ({ language }) => {
       }
       
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName:translations[language]['name'], width: 150 , editable: true},
+    { field: 'name', headerName:Translations[language]['name'], width: 150 , editable: true},
   ];
   const apiUrl = '/api/v1/region';
 

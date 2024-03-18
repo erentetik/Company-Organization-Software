@@ -12,7 +12,7 @@ import { InputLabel } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import translations from "../../Resources/translations";
+import Translations from "../../Resources/translations";
 
 const Town = ({ language }) => {
     const handleSnackbarClose = () => {
@@ -20,9 +20,9 @@ const Town = ({ language }) => {
         };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: translations[language]['name'], width: 150 },
-        { field: 'region', headerName:  translations[language]['region'], width: 150, valueGetter: (params) => params.row.region.name },
-        { field: 'city', headerName:  translations[language]['city'], width: 150, valueGetter: (params) => params.row.city.name }
+        { field: 'name', headerName: Translations[language]['name'], width: 150 },
+        { field: 'region', headerName:  Translations[language]['region'], width: 150, valueGetter: (params) => params.row.region.name },
+        { field: 'city', headerName:  Translations[language]['city'], width: 150, valueGetter: (params) => params.row.city.name }
       ];
   const apiUrl = '/api/v1/town';
 

@@ -13,7 +13,7 @@ import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
 import { Navigate } from 'react-router-dom';
-import translations from '../../Resources/translations';
+import Translations from '../../Resources/translations';
 
 const ActivateUser = ({ language }) => {
     const defaultTheme = createTheme();
@@ -28,7 +28,7 @@ const ActivateUser = ({ language }) => {
       const email = formData.get("email");
 
       if (!MAIL_REGEX.test(email)) {
-          setError(translations[language]['invalidEmail']);
+          setError(Translations[language]['invalidEmail']);
           return;
       }
       setError(''); 
@@ -37,12 +37,12 @@ const ActivateUser = ({ language }) => {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(translations[language]['sendedVerificationEmail']);
+        setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(translations[language]['wrongEmail']);
+        setSnackbarMessage(Translations[language]['wrongEmail']);
         setSnackbarOpen(true);
       });
       Navigate('/')
@@ -61,7 +61,7 @@ const ActivateUser = ({ language }) => {
               }}
             >
               <Typography component="h1" variant="h5">
-                {translations[language]['enterYourEmail']}
+                {Translations[language]['enterYourEmail']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -71,7 +71,7 @@ const ActivateUser = ({ language }) => {
                   onChange={(data) => setEmail(data.target.value)}
                   id="email"
                   type='email'
-                  label={translations[language]['emailAddress']}
+                  label={Translations[language]['emailAddress']}
                   name="email"
                   error={!!error} // Display error state
                   helperText={error} // Show error message
@@ -83,9 +83,9 @@ const ActivateUser = ({ language }) => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {translations[language]['sendVerificationEmail']}
+                  {Translations[language]['sendVerificationEmail']}
                 </Button>
-                <NavigateButton to="/" buttonText={translations[language]['alreadyHaveAnAccount']} fullWidth sx={{ mt: 3, mb: 2 }}/>
+                <NavigateButton to="/" buttonText={Translations[language]['alreadyHaveAnAccount']} fullWidth sx={{ mt: 3, mb: 2 }}/>
               </Box>
             </Box>
           </Container>
