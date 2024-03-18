@@ -12,6 +12,7 @@ import { url } from '../../components/constants';
 import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import { Navigate } from 'react-router-dom';
 
 function ResetPassword() {
     const defaultTheme = createTheme();

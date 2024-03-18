@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
+import { Navigate } from 'react-router-dom';
 
 const ActivateUser = () => {
     const defaultTheme = createTheme();
