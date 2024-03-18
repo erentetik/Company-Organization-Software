@@ -58,6 +58,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
         const selectedRow = rows.find(row => row.id === selectedRowId);
     
         setEditData(selectedRow);
+        console.log("editdata", editData)
         console.log(selectedRow)
         setOpenEditDialog(true);
         handleClick();        
@@ -211,7 +212,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="region"
                                         required
                                         fullWidth
-                                        value={editData.region || ''}
+                                        value={editData.region.name || ''}
                                         label="region"
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -228,7 +229,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="city"
                                         required
                                         fullWidth
-                                        value={editData.city || ''}
+                                        value={editData.city.name || ''}
                                         label="city"
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -246,7 +247,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="companyType"
                                         required
                                         fullWidth
-                                        value={editData.companyType || ''}
+                                        value={editData.companyType.name || ''}
                                         label="companyType"
                                             onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -263,7 +264,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="addressTown"
                                         required
                                         fullWidth
-                                        value={editData.addressTown || ''}
+                                        value={editData.addressTown.name || ''}
                                         label="addressTown"
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >

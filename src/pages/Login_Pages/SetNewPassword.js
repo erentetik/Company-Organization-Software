@@ -13,6 +13,7 @@ import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
+
 function SetNewPassword() {
     const defaultTheme = createTheme();
     const { token }  = useParams();

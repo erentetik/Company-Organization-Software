@@ -15,9 +15,7 @@ import { AuthProvider } from './components/AuthContext';
 function App() {
   const [signedIn, setSignedIn] = useState(localStorage.getItem('signedIn'));
   const name = localStorage.getItem('name');
-  console.log(name);
-  console.log(signedIn);
- 
+  
 
   return (
     <AuthProvider setSignedIn={setSignedIn}>
