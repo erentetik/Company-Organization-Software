@@ -7,7 +7,7 @@ import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import Translations from "../../Resources/translations";
+import Translations from "../../Resources/languages";
 
 const Users = ({signedIn, setSignedIn, language }) => {
     const handleSnackbarClose = () => {

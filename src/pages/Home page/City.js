@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import Translations from "../../Resources/translations";
+import Translations from "../../Resources/languages";
 
 
 const City = ({ language }) => {

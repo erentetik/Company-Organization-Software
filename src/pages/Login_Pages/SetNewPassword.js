@@ -12,7 +12,7 @@ import { validatePassword } from '../../components/constants';
 import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import Translations from '../../Resources/translations';
+import Translations from '../../Resources/languages';
 
 
 function SetNewPassword({ language }) {

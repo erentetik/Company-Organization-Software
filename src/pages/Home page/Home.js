@@ -4,10 +4,11 @@ import { Container, Box, Typography, Button, Paper } from "@mui/material";
 import LocalStorageDelete from "../../Resources/localStorage";
 import NavBar from "../../components/navbar";
 import { useAuth } from "../../components/AuthContext";
-import Translations from "../../Resources/translations";
+import Translations from "../../Resources/languages";
 
 
 const Home = ({ signedIn, setSignedIn, language }) => {
+    console.log(Translations[language]['userInfo'])
 
     const image = localStorage.getItem("image");
 

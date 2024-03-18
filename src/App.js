@@ -14,7 +14,7 @@ import { AuthProvider } from './components/AuthContext';
 import LanguageSelector from './components/LanguageSelector';
 function App() {
   const [signedIn, setSignedIn] = useState(localStorage.getItem('signedIn'));
-  const [language, setLanguage] = useState(localStorage.getItem('language'));
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'en');
   const name = localStorage.getItem('name');
   
 

@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import Translations from "../../Resources/translations";
+import Translations from "../../Resources/languages";
 
 const Regions = ({ language }) => {
     const handleSnackbarClose = () => {
