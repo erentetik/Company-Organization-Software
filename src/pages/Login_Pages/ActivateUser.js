@@ -43,6 +43,7 @@ const ActivateUser = () => {
         setSnackbarMessage('Failed to send verification email');
         setSnackbarOpen(true);
       });
+      Navigate('/')
   };
 
     return (

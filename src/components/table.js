@@ -10,7 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 
-    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , companyList, roleList, departmentList , handleShowForm, handlephotoClick}) {
+    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , isUser, companyList, roleList, departmentList , handleShowForm, handlephotoClick}) {
     const token = localStorage.getItem("token");
     const [rows, setRows] = useState([]);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -35,7 +35,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
         };
 
         fetchData();
-    }, [apiUrl , mapper, token]);
+    }, [apiUrl , mapper, token, editData]);
 
     
     const handleRowSelection = (selection) => {
@@ -58,6 +58,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
         const selectedRow = rows.find(row => row.id === selectedRowId);
     
         setEditData(selectedRow);
+        console.log(selectedRow)
         setOpenEditDialog(true);
         handleClick();        
     
@@ -82,8 +83,9 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
              <div style={{ position: 'relative', display: 'inline-block' , justifyContent: 'flex-end'}}>
              {showButton && 
              <>
-                {userRole === 'ROLE_ADMIN' && (
+                {userRole === 'ROLE_ADMIN'  && (
                 <>
+                    {isUser && (
                     <Button
                     style={{
                        margin: '8px',
@@ -104,6 +106,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                >
                    Add Photo
                </Button>
+                    )}
                
                 <Button
                      style={{

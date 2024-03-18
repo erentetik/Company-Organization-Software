@@ -43,6 +43,7 @@ const Users = (signedIn, setSignedIn) => {
     const [editData, setEditData] = useState({});
     const token = localStorage.getItem("token");
     const userRole = localStorage.getItem("role");
+    const [isUser, setIsUser] = useState(true);
 
 
     const columns1 = [
@@ -255,7 +256,8 @@ const Users = (signedIn, setSignedIn) => {
         <div>
             <NavBar />
             <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} setEditData={setEditData} handleClick={handleClick} companyList={companyList}
-            editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} handlephotoClick={handlephotoClick}/>
+            editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} handlephotoClick={handlephotoClick}
+            isUser={isUser}/>
             
                 {/* <>
                         <Button
