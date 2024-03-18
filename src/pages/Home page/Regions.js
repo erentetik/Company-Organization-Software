@@ -9,14 +9,15 @@ import { Button } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import translations from "../../Resources/languages";
 
-const Regions = () => {
+const Regions = ({ language }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
       }
       
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 , editable: true},
+    { field: 'name', headerName:translations[language]['name'], width: 150 , editable: true},
   ];
   const apiUrl = '/api/v1/region';
 
@@ -111,7 +112,7 @@ const handleChange = async() => {
         <div>
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
-            editData={editData} setEditData={setEditData} handleClick={handleClick} handleShowForm={handleShowForm}/>
+            editData={editData} setEditData={setEditData} handleClick={handleClick} handleShowForm={handleShowForm} language={language}/>
             {/* <Button
                   type="Add User"
                   width="100%"

@@ -5,8 +5,6 @@ import NavigateButton from '../../components/NavigateButton';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,14 +13,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { MAIL_REGEX } from '../../components/constants';
 import { url } from '../../components/constants';
+import translations from '../../Resources/languages';
 
-function SignIn({ setSignedIn, signedIn }) {
+function SignIn({ setSignedIn, signedIn, language }) {
+
   const defaultTheme = createTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -36,7 +38,7 @@ function SignIn({ setSignedIn, signedIn }) {
           const password = formData.get("password");
 
       if (!MAIL_REGEX.test(email)) {
-          setError('Invalid email address');
+          setError(translations[language]['invalidEmail']);
           return;
       }
       setError(''); 
@@ -47,7 +49,7 @@ function SignIn({ setSignedIn, signedIn }) {
         password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage('Login successful');
+        setSnackbarMessage(translations[language]['loginSuccess']);
         setSnackbarOpen(true);
         localStorage.setItem("name", response.data.userDto.name);
         localStorage.setItem("surname", response.data.userDto.surname);
@@ -63,7 +65,7 @@ function SignIn({ setSignedIn, signedIn }) {
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('Login failed');
+        setSnackbarMessage(translations[language]['loginFailed']);
         setSnackbarOpen(true);
         
       });
@@ -83,7 +85,7 @@ function SignIn({ setSignedIn, signedIn }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                Sign in
+                {translations[language]['signIn']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -91,7 +93,7 @@ function SignIn({ setSignedIn, signedIn }) {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={translations[language]['emailAddress']}
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -104,30 +106,27 @@ function SignIn({ setSignedIn, signedIn }) {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label={translations[language]['password']}
                   type="password"
                   id="password"
                   onChange={(data) => setPassword(data.target.value)}
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+                
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  {translations[language]['signIn']}
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <NavigateButton to="/ResetPassword" buttonText="Reset Password"/>
+                    <NavigateButton to="/ResetPassword" buttonText={translations[language]['resetPassword']}/>
                   </Grid>
                   <Grid item>
-                    <NavigateButton to="/ActivateUser" buttonText="Activate User"/>
+                    <NavigateButton to="/ActivateUser" buttonText={translations[language]['activateUser']}/>
                   </Grid>
                 </Grid>
               </Box>

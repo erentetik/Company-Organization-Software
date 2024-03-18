@@ -12,19 +12,20 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { InputLabel } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import translations from "../../Resources/languages";
 
-const Companies = () => {
+const Companies = ({ language }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
         };
     const columns = [{ field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'shortName', headerName: 'Short Name', width: 150 },
-    { field: 'companyType', headerName: 'Company Type', width: 150, valueGetter: (params) => params.row.companyType.name },
-    { field: 'addressStreet', headerName: 'Street', width: 150 },
-    { field: 'addressTown', headerName: 'Town', width: 150, valueGetter: (params) => params.row.addressTown.name },
-    { field: 'region', headerName: 'Region', width: 150, valueGetter: (params) => params.row.addressTown.region.name },
-    { field: 'city', headerName: 'City', width: 150, valueGetter: (params) => params.row.addressTown.city.name }
+    { field: 'name', headerName: translations[language]['name'], width: 150 },
+    { field: 'shortName', headerName: translations[language]['shortName'], width: 150 },
+    { field: 'companyType', headerName: translations[language]['companyType'], width: 150, valueGetter: (params) => params.row.companyType.name },
+    { field: 'addressStreet', headerName: translations[language]['addressStreet'], width: 150 },
+    { field: 'addressTown', headerName: translations[language]['addressTown'], width: 150, valueGetter: (params) => params.row.addressTown.name },
+    { field: 'region', headerName: translations[language]['region'], width: 150, valueGetter: (params) => params.row.addressTown.region.name },
+    { field: 'city', headerName: translations[language]['city'], width: 150, valueGetter: (params) => params.row.addressTown.city.name }
   ];
   const apiUrl = '/api/v1/company';
 
@@ -169,7 +170,7 @@ const handleChange = async() => {
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
             editData={editData} setEditData={setEditData} handleClick={handleClick} companyType={companyType} companyTypeList={companyTypeList}
-            addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany} handleShowForm={handleShowForm}/>
+            addressTown={addressTown} addressTownList={addressTownList} isCompany={isCompany} handleShowForm={handleShowForm} language={language}/>
 
           
             {/* <Button

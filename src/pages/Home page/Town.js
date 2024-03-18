@@ -12,16 +12,17 @@ import { InputLabel } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import translations from "../../Resources/languages";
 
-const Town = () => {
+const Town = ({ language }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
         };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'region', headerName: 'Region', width: 150, valueGetter: (params) => params.row.region.name },
-        { field: 'city', headerName: 'City', width: 150, valueGetter: (params) => params.row.city.name }
+        { field: 'name', headerName: translations[language]['name'], width: 150 },
+        { field: 'region', headerName:  translations[language]['region'], width: 150, valueGetter: (params) => params.row.region.name },
+        { field: 'city', headerName:  translations[language]['city'], width: 150, valueGetter: (params) => params.row.city.name }
       ];
   const apiUrl = '/api/v1/town';
 
@@ -158,7 +159,7 @@ const handleChange = async() => {
         <div>
             <NavBar/>
             <DataTable columns={columns} apiUrl={apiUrl} mapper={mapUserData} handleDelete={handleDelete} handleChange={handleChange}
-            editData={editData} setEditData={setEditData} regionList={regionList} cityList={cityList} handleClick={handleClick} handleShowForm={handleShowForm} region={region} city={city}/>
+            editData={editData} setEditData={setEditData} regionList={regionList} cityList={cityList} handleClick={handleClick} language={language} handleShowForm={handleShowForm} region={region} city={city}/>
             {/* <Button
                   type="Add User"
                   width="100%"

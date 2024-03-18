@@ -7,8 +7,9 @@ import LocalStorageDelete from "../../Resources/localStorage";
 import { TextField, Box, Button, Select, MenuItem, InputLabel,  Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import translations from "../../Resources/languages";
 
-const Users = (signedIn, setSignedIn) => {
+const Users = ({signedIn, setSignedIn, language }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
       };
@@ -48,12 +49,12 @@ const Users = (signedIn, setSignedIn) => {
 
     const columns1 = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'Name', width: 150 },
-        { field: 'lastName', headerName: 'Surname', width: 150 },
-        {field: 'email', headerName: 'Email', width: 250},
-          {field: 'role', headerName: 'Role', width: 150},
-          {field: 'department', headerName: 'Department', width: 150},
-          {field: 'company', headerName: 'Company', width: 150}
+        { field: 'firstName', headerName: translations[language]['name'], width: 150 },
+        { field: 'lastName', headerName: translations[language]['surname'], width: 150 },
+        {field: 'email', headerName: translations[language]['email'], width: 250},
+          {field: 'role', headerName: translations[language]['role'], width: 150},
+          {field: 'department', headerName: translations[language]['department'], width: 150},
+          {field: 'company', headerName: translations[language]['company'], width: 150}
       ];
     const apiUrl1 = '/api/v1/user/users';
     
@@ -257,7 +258,7 @@ const Users = (signedIn, setSignedIn) => {
             <NavBar />
             <DataTable columns={columns1} apiUrl={apiUrl1} mapper={mapUserData} setEditData={setEditData} handleClick={handleClick} companyList={companyList}
             editData={editData} departmentList={departmentList} roleList={roleList} handleDelete={handleDelete} handleChange={handleChange} handleShowForm={handleShowForm} handlephotoClick={handlephotoClick}
-            isUser={isUser}/>
+            isUser={isUser} language={language}/>
             
                 {/* <>
                         <Button

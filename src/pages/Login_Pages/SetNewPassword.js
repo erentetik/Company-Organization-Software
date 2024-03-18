@@ -12,9 +12,10 @@ import { validatePassword } from '../../components/constants';
 import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
+import translations from '../../Resources/languages';
 
 
-function SetNewPassword() {
+function SetNewPassword({ language }) {
     const defaultTheme = createTheme();
     const { token }  = useParams();
     const navigate = useNavigate()
@@ -34,10 +35,12 @@ function SetNewPassword() {
        .then((response) => {
            setValid(true);
            console.log("token operation was successful", response);
-        setSnackbarOpen(true);
+           setSnackbarMessage(translations[language]['successfull']);
+           setSnackbarOpen(true);
          }).catch((error) => {
             console.error('There was a problem with the token operation:', error);
-            setSnackbarMessage('Invalid token');
+            setSnackbarMessage(translations[language]['anErrorOccured']);
+            setSnackbarOpen(true);
             navigate("/");
            });
          };
@@ -91,7 +94,7 @@ function SetNewPassword() {
               }}
             >
               <Typography component="h1" variant="h5">
-                Enter your password
+                {translations[language]['enterNewPassword']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -99,7 +102,7 @@ function SetNewPassword() {
                   required
                   fullWidth
                   id="password"
-                  label="Password"
+                  label={translations[language]['password']}
                   name="password"
                   type="password"
                   value={password}
@@ -114,7 +117,7 @@ function SetNewPassword() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Set new password
+                  {translations[language]['setNewPassword']}
                 </Button>
               </Box>
             </Box>

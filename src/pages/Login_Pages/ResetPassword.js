@@ -13,8 +13,10 @@ import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { Navigate } from 'react-router-dom';
+import translations from '../../Resources/languages';
 
-function ResetPassword() {
+
+function ResetPassword({ language }) {
     const defaultTheme = createTheme();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
@@ -28,7 +30,7 @@ function ResetPassword() {
       const email = formData.get("email");
 
       if (!MAIL_REGEX.test(email)) {
-          setError('Invalid email address');
+          setError(translations[language]['invalidEmail']);
           return;
       }
       setError(''); 
@@ -39,12 +41,12 @@ function ResetPassword() {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage('Verification email sent');
+        setSnackbarMessage(translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('Failed to send verification email');
+        setSnackbarMessage(translations[language]['wrongEmail']);
         setSnackbarOpen(true);
       });
       Navigate('/')
@@ -64,7 +66,7 @@ function ResetPassword() {
               }}
             >
               <Typography component="h1" variant="h5">
-                Enter your email
+                {translations[language]['enterYourEmail']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -72,7 +74,7 @@ function ResetPassword() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={translations[language]['emailAddress']}
                   name="email"
                   onChange={(data) => setEmail(data.target.value)}
                   type='email'
@@ -86,9 +88,9 @@ function ResetPassword() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Send verification email
+                  {translations[language]['sendVerificationEmail']}
                 </Button>
-                <NavigateButton to="/" buttonText="Return sign in page" fullWidth sx={{ mt: 3, mb: 2 }}/>
+                <NavigateButton to="/" buttonText={translations[language]['returnToSignInPage']} fullWidth sx={{ mt: 3, mb: 2 }}/>
               </Box>
             </Box>
           </Container>

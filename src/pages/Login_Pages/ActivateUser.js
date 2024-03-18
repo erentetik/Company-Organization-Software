@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 import NavigateButton from '../../components/NavigateButton';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
@@ -13,8 +13,9 @@ import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
 import { Navigate } from 'react-router-dom';
+import translations from '../../Resources/languages';
 
-const ActivateUser = () => {
+const ActivateUser = ({ language }) => {
     const defaultTheme = createTheme();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
@@ -27,7 +28,7 @@ const ActivateUser = () => {
       const email = formData.get("email");
 
       if (!MAIL_REGEX.test(email)) {
-          setError('Invalid email address');
+          setError(translations[language]['invalidEmail']);
           return;
       }
       setError(''); 
@@ -36,12 +37,12 @@ const ActivateUser = () => {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage('Verification email sent');
+        setSnackbarMessage(translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('Failed to send verification email');
+        setSnackbarMessage(translations[language]['wrongEmail']);
         setSnackbarOpen(true);
       });
       Navigate('/')
@@ -60,7 +61,7 @@ const ActivateUser = () => {
               }}
             >
               <Typography component="h1" variant="h5">
-                Enter your email
+                {translations[language]['enterYourEmail']}
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -70,7 +71,7 @@ const ActivateUser = () => {
                   onChange={(data) => setEmail(data.target.value)}
                   id="email"
                   type='email'
-                  label="Email Address"
+                  label={translations[language]['emailAddress']}
                   name="email"
                   error={!!error} // Display error state
                   helperText={error} // Show error message
@@ -82,9 +83,9 @@ const ActivateUser = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Send verification email
+                  {translations[language]['sendVerificationEmail']}
                 </Button>
-                <NavigateButton to="/" buttonText="I already have an account" fullWidth sx={{ mt: 3, mb: 2 }}/>
+                <NavigateButton to="/" buttonText={translations[language]['alreadyHaveAnAccount']} fullWidth sx={{ mt: 3, mb: 2 }}/>
               </Box>
             </Box>
           </Container>

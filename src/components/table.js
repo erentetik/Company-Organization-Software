@@ -7,10 +7,11 @@ import { GridToolbar } from '@mui/x-data-grid';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import translations from '../Resources/languages';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 
-    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , isUser, companyList, roleList, departmentList , handleShowForm, handlephotoClick}) {
+    regionList, cityList , handleClick  , companyTypeList, addressTownList, isCompany , isUser, companyList, roleList, departmentList , handleShowForm, handlephotoClick, language}) {
     const token = localStorage.getItem("token");
     const [rows, setRows] = useState([]);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -58,8 +59,6 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
         const selectedRow = rows.find(row => row.id === selectedRowId);
     
         setEditData(selectedRow);
-        console.log("editdata", editData)
-        console.log(selectedRow)
         setOpenEditDialog(true);
         handleClick();        
     
@@ -105,7 +104,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                        handlephotoClick();
                    }}
                >
-                   Add Photo
+                   {translations[language]['Add Photo']}
                </Button>
                     )}
                
@@ -127,7 +126,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                         handleDelete();
                     }}
                 >
-                    Delete
+                    {translations[language]['Delete']}
                 </Button>
                 </>
                 )}
@@ -150,7 +149,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                    handleEditClick();
                }}
            >
-               Edit
+                {translations[language]['Edit']}
            </Button>
            </>
 
@@ -171,7 +170,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                         handleClick();
                     }}
                 >
-                    Add 
+                    {translations[language]['Add']}
                 </Button>
             </div>
         
@@ -213,7 +212,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.region.name || ''}
-                                        label="region"
+                                        label={translations[language]['region']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {regionList?.map(regionItem => (
@@ -230,7 +229,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.city.name || ''}
-                                        label="city"
+                                        label={translations[language]['city']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {cityList?.map(cityItem => (
@@ -248,7 +247,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.companyType.name || ''}
-                                        label="companyType"
+                                        label={translations[language]['companyType']}
                                             onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {companyTypeList?.map(companyTypeItem => (
@@ -265,7 +264,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.addressTown.name || ''}
-                                        label="addressTown"
+                                        label={translations[language]['addressTown']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {addressTownList?.map((addressTownItem) => (
@@ -284,7 +283,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.company || ''}
-                                        label="company"
+                                        label={translations[language]['company']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {companyList?.map((companyItem) => (
@@ -303,7 +302,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.role || ''}
-                                        label="role"
+                                        label={translations[language]['role']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {roleList?.map((roleItem) => (
@@ -322,7 +321,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         required
                                         fullWidth
                                         value={editData.department || ''}
-                                        label="department"
+                                        label={translations[language]['department']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
                                         {departmentList?.map((departmentItem) => (

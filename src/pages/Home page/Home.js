@@ -4,11 +4,10 @@ import { Container, Box, Typography, Button, Paper } from "@mui/material";
 import LocalStorageDelete from "../../Resources/localStorage";
 import NavBar from "../../components/navbar";
 import { useAuth } from "../../components/AuthContext";
-import { Margin } from "@mui/icons-material";
+import translations from "../../Resources/languages";
 
 
-
-const Home = ({ signedIn, setSignedIn }) => {
+const Home = ({ signedIn, setSignedIn, language }) => {
 
     const image = localStorage.getItem("image");
 
@@ -51,14 +50,14 @@ const Home = ({ signedIn, setSignedIn }) => {
             <NavBar handleSignOut={handleSignOut}/>
             <Box mt={4} display="flex" justifyContent="center">
                 <Paper elevation={3} style={{ padding: '20px', maxWidth: '500px' }}>
-                    <Typography variant="h3" align="center">User Information</Typography>
+                    <Typography variant="h3" align="center">{translations[language]['userInfo']}</Typography>
                     <img src={imageUrl} alt="User" style={{ width: '70%', borderRadius: '50%', marginBottom: '20px', marginLeft:'75px'  }} />
-                    <Typography variant="body1">Name: {name}</Typography>
-                    <Typography variant="body1">Surname: {surname}</Typography>
-                    <Typography variant="body1">Role: {role}</Typography>
-                    <Typography variant="body1">Email: {email}</Typography>
-                    <Typography variant="body1">Company: {company}</Typography>
-                    <Typography variant="body1">Department: {department}</Typography>
+                    <Typography variant="body1">{translations[language]['name']}: {name}</Typography>
+                    <Typography variant="body1">{translations[language]['surname']}: {surname}</Typography>
+                    <Typography variant="body1">{translations[language]['role']}: {role}</Typography>
+                    <Typography variant="body1">{translations[language]['email']}: {email}</Typography>
+                    <Typography variant="body1">{translations[language]['company']}: {company}</Typography>
+                    <Typography variant="body1">{translations[language]['department']}: {department}</Typography>
                 </Paper>
             </Box>
         </Container>
