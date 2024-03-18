@@ -61,7 +61,6 @@ function SignIn({ setSignedIn, signedIn, language }) {
         localStorage.setItem("token", response.data.token);
         setSignedIn(true); 
         localStorage.setItem("signedIn", signedIn);
-        console.log(response.data.userDto.company);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
