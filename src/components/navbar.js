@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Box, Drawer, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from './AuthContext';
-import translations from '../Resources/languages';
+import translations from '../Resources/translations';
 
 
 const NavBar = ({ language }) => {

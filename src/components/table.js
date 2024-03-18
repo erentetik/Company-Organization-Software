@@ -7,7 +7,7 @@ import { GridToolbar } from '@mui/x-data-grid';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import translations from '../Resources/languages';
+import translations from '../Resources/translations';
 
 
 function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editData, setEditData , 

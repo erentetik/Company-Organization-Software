@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { MAIL_REGEX } from '../../components/constants';
 import { url } from '../../components/constants';
-import translations from '../../Resources/languages';
+import translations from '../../Resources/translations';
 
 function SignIn({ setSignedIn, signedIn, language }) {
 

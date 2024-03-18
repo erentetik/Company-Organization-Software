@@ -4,7 +4,7 @@ import { Container, Box, Typography, Button, Paper } from "@mui/material";
 import LocalStorageDelete from "../../Resources/localStorage";
 import NavBar from "../../components/navbar";
 import { useAuth } from "../../components/AuthContext";
-import translations from "../../Resources/languages";
+import translations from "../../Resources/translations";
 
 
 const Home = ({ signedIn, setSignedIn, language }) => {

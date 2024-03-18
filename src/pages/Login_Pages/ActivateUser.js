@@ -13,7 +13,7 @@ import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
 import { Navigate } from 'react-router-dom';
-import translations from '../../Resources/languages';
+import translations from '../../Resources/translations';
 
 const ActivateUser = ({ language }) => {
     const defaultTheme = createTheme();

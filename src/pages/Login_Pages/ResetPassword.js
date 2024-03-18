@@ -13,7 +13,7 @@ import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { Navigate } from 'react-router-dom';
-import translations from '../../Resources/languages';
+import translations from '../../Resources/translations';
 
 
 function ResetPassword({ language }) {
