@@ -104,7 +104,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                        handlephotoClick();
                    }}
                >
-                   {Translations[language]['Add Photo']}
+                   {Translations[language]['addPhoto']}
                </Button>
                     )}
                
