@@ -140,18 +140,30 @@ const handleSubmit = async(data) => {
 };
 const handleChange = async() => {
     const ids = localStorage.getItem("selectedRowIds");
+    let companyTypeData = editData.companyType;
+    let addressTownData = editData.addressTown;
+
+    if (editData.companyType.name !== undefined) 
+    {
+        companyTypeData = editData.companyType.name;
+    }
+    if (editData.addressTown.name !== undefined)
+    {
+        addressTownData = editData.addressTown.name;
+    }
+
     await axios.put(url + '/api/v1/company/' + ids , {
         name: editData.name,
         shortName: editData.shortName,
-        companyType: editData.companyType,
+        companyType: companyTypeData,
         addressStreet: editData.addressStreet,
-        addressTown: editData.addressTown,
+        addressTown: addressTownData,
         id: ids,
 
        }, {
         headers: {
             Authorization: token
-        }
+        }   
 
     }).then(response => {
         console.log("Fetch operation was successful", response);
