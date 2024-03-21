@@ -129,31 +129,39 @@ const handleSubmit = async(data) => {
         
  
 };
-const handleChange = async() => {
+const handleChange = async () => {
     const ids = localStorage.getItem("selectedRowIds");
-    await axios.put(url + '/api/v1/town/' + ids , {
+    let regionData = editData.region;
+    let regionCity = editData.city;
+
+    if (editData.region.name !== undefined) {    
+       regionData = editData.region.name;
+    }
+    if (editData.city.name !== undefined) {
+        regionCity = editData.city.name;
+    }
+
+
+    await axios.put(url + '/api/v1/town/' + ids, {
         name: editData.name,
-        region: editData.region,
-        city: editData.city,
+        region: regionData,
+        city: regionCity,
         id: ids,
-        }, {
+    }, {
         headers: {
             Authorization: token
         }
-
     }).then(response => {
         console.log("Fetch operation was successful", response);
         setSnackbarMessage('Town updated');
         setSnackbarOpen(true);
-       
-    })
-    .catch(error => {
+    }).catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('Town can not updated');
+        setSnackbarMessage('Town could not be updated');
         setSnackbarOpen(true);
-        
     });
 };
+
 
     return ( 
         <div>
