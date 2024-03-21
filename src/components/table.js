@@ -211,7 +211,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="region"
                                         required
                                         fullWidth
-                                        value={editData.region.name || ''}
+                                        value={editData.region.name || editData.region || ''}
                                         label={Translations[language]['region']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -228,7 +228,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="city"
                                         required
                                         fullWidth
-                                        value={editData.city.name || ''}
+                                        value={editData.city.name || editData.city || ''}
                                         label={Translations[language]['city']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -246,7 +246,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="companyType"
                                         required
                                         fullWidth
-                                        value={editData.companyType.name || ''}
+                                        value={editData.companyType.name || editData.companyType || ''}
                                         label={Translations[language]['companyType']}
                                             onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >
@@ -263,7 +263,7 @@ function DataTable({ columns, apiUrl, mapper , handleDelete, handleChange, editD
                                         id="addressTown"
                                         required
                                         fullWidth
-                                        value={editData.addressTown.name || ''}
+                                        value={editData.addressTown.name || editData.addressTown || ''}
                                         label={Translations[language]['addressTown']}
                                         onChange={(e) => setEditData(prevData => ({ ...prevData, [key]: e.target.value }))}
                                     >

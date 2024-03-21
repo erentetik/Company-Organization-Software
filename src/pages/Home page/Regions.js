@@ -87,6 +87,7 @@ const handleSubmit = async(data) => {
     });
 };
 const handleChange = async() => {
+ 
     const ids = localStorage.getItem("selectedRowIds");
     await axios.put(url + '/api/v1/region/' + ids , {
         name: editData.name,
@@ -99,12 +100,12 @@ const handleChange = async() => {
 
     }).then(response => {
         console.log("Fetch operation was successful", response);
-        setSnackbarMessage('Region deleted');
+        setSnackbarMessage('Region updated');
         setSnackbarOpen(true);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage('Region can not deleted');
+        setSnackbarMessage('Region can not updated');
         setSnackbarOpen(true);
     });
 }

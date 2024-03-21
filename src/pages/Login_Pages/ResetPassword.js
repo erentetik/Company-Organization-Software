@@ -12,12 +12,13 @@ import { url } from '../../components/constants';
 import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { Navigate } from 'react-router-dom';
 import Translations from '../../Resources/languages';
+import { useNavigate } from 'react-router-dom';
 
 
 function ResetPassword({ language }) {
     const defaultTheme = createTheme();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -41,15 +42,26 @@ function ResetPassword({ language }) {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
+        if(response.data === 'Kullanıcı aktif değil.'){
+          setSnackbarMessage(Translations[language]['userNotActive']);
+          setSnackbarOpen(true);
+          return;
+        }else if(response.data === 'Kullanıcı bulunamadı.'){
+          setSnackbarMessage(Translations[language]['wrongEmail']);
+          setSnackbarOpen(true);
+        }else{
         setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
+        setTimeout(() => {
+          navigate('/');
+      }, 1000);}
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
         setSnackbarMessage(Translations[language]['wrongEmail']);
         setSnackbarOpen(true);
       });
-      Navigate('/')
+
          
   };
       

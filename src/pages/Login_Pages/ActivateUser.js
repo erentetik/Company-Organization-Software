@@ -12,11 +12,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Translations from '../../Resources/languages';
 
 const ActivateUser = ({ language }) => {
     const defaultTheme = createTheme();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -37,15 +38,21 @@ const ActivateUser = ({ language }) => {
         email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
+        if(response.data === 'Kullanıcı zaten veritabanında mevcut.'){
+          setSnackbarMessage(Translations[language]['userIsAlreadyActive']);
+          setSnackbarOpen(true);
+        }else{
         setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
+        setTimeout(() => {
+          navigate('/');
+      }, 1000);}
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
         setSnackbarMessage(Translations[language]['wrongEmail']);
         setSnackbarOpen(true);
       });
-      Navigate('/')
   };
 
     return (

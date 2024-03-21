@@ -71,13 +71,20 @@ function SetNewPassword({ language }) {
               password: password
           }).then((response) => {
               console.log("Fetch operation was successful", response);
+              setSnackbarMessage(Translations[language]['successfull']);
+              setSnackbarOpen(true);
+              setTimeout(() => {
+                navigate('/');
+            }, 1000);
         
           }).catch((error) => {
               console.log("There was a problem with the fetch operation:", error);
+              setSnackbarMessage(Translations[language]['anErrorAccured']);
+              setSnackbarOpen(true);
 
           });
           
-          navigate("/");
+ 
       }
   };
   

@@ -8,7 +8,6 @@ import Translations from "../../Resources/languages";
 
 
 const Home = ({ signedIn, setSignedIn, language }) => {
-    console.log(Translations[language]['userInfo'])
 
     const image = localStorage.getItem("image");
 
