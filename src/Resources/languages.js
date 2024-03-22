@@ -11,6 +11,7 @@ const Translations = {
         invalidEmail: 'Invalid email address',
         password: 'Password',
         sendVerificationEmail: 'Send verification email',
+        setNewPassword: 'Set New Password',
         sendedVerificationEmail: 'Verification email sent',
         returnToSignInPage: 'Return to sign-in page',
         anErrorAccured: 'An error accured',
@@ -65,7 +66,8 @@ const Translations = {
         addressStreet: 'Street',
         addressTown: 'Town',
         region: 'Region',
-        city: 'City'
+        city: 'City',
+        enterNewPassword: 'Enter New Password'
 
     },
     tr: {
@@ -77,6 +79,8 @@ const Translations = {
         resetPassword: 'Şifreyi sıfırla',
         successfull: 'Başarılı',
         activateUser: 'Kullanıcıyı etkinleştir',
+        setNewPassword: 'Yeni Şifreni Belirle',
+        enterNewPassword: 'Yeni Şifreni Gir',
         emailAddress: 'E-posta adresi',
         Add: 'Ekle',
         Delete: 'Sil',
