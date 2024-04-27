@@ -47,7 +47,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
       await axios.post(requestUrl, {
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(Translations[language]['loginSuccess']);
+        setSnackbarMessage(Translations[language]['loginSuccessMessage']);
         setSnackbarOpen(true);
         setSignedIn(true); 
         console.log(response.data.data.userResponse.name);
@@ -55,7 +55,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(Translations[language]['loginFailed']);
+        setSnackbarMessage(Translations[language]['loginFailedMessage']);
         setSnackbarOpen(true);
         
       });
