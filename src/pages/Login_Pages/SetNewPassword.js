@@ -30,24 +30,7 @@ function SetNewPassword({ language }) {
       setSnackbarOpen(false);
     };
   
-    const verifyLink = async () => {
-       await axios.put(url + "/api/v1/auth/set-password/" + token, {})
-       .then((response) => {
-           setValid(true);
-           console.log("token operation was successful", response);
-           setSnackbarMessage(Translations[language]['successfull']);
-           setSnackbarOpen(true);
-         }).catch((error) => {
-            console.error('There was a problem with the token operation:', error);
-            setSnackbarMessage(Translations[language]['anErrorOccured']);
-            setSnackbarOpen(true);
-            navigate("/");
-           });
-         };
-
-    useEffect(() => {
-        verifyLink();
-    }, [])
+ 
 
     const handleSubmit = async (data) => {
       data.preventDefault();
@@ -65,10 +48,10 @@ function SetNewPassword({ language }) {
       }
 
       setErrors([]); // Clear any previous errors
-      if (isPasswordValid && isLinkValid) {
-          await axios.put(url + '/api/v1/auth/set-password/' + token, {
-              token: token,
-              password: password
+      const requestUrl = `${url}/api/auth/confirm-reset-password?key=${token}&newPassword=${password}`;
+      if (isPasswordValid) {
+          await axios.post(requestUrl, {
+             
           }).then((response) => {
               console.log("Fetch operation was successful", response);
               setSnackbarMessage(Translations[language]['successfull']);

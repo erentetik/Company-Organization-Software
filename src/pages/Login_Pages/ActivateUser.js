@@ -37,7 +37,7 @@ const ActivateUser = ({ language }) => {
       const requestUrl = `${url}/api/auth/activate-account?email=${email}`;
 
       
-      await axios.post(requestUrl , {
+      await axios.post(requestUrl, {
       }).then(response => {
         console.log("Fetch operation was successful" , response);
         setSnackbarMessage(Translations[language]['sendedVerificationEmail']);

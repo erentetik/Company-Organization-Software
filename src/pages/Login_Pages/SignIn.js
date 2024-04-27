@@ -49,15 +49,8 @@ function SignIn({ setSignedIn, signedIn, language }) {
         console.log("Fetch operation was successful" , response);
         setSnackbarMessage(Translations[language]['loginSuccess']);
         setSnackbarOpen(true);
-        localStorage.setItem("name", response.data.userDto.name);
-        localStorage.setItem("surname", response.data.userDto.surname);
-        localStorage.setItem("role", response.data.userDto.role);
-        localStorage.setItem("email", response.data.userDto.email);
-        localStorage.setItem("department", response.data.userDto.department);
-        localStorage.setItem("company", response.data.userDto.company);
-        localStorage.setItem("image", response.data.userDto.image);
-        localStorage.setItem("token", response.data.token);
         setSignedIn(true); 
+        console.log(response.data.data.userResponse.name);
         localStorage.setItem("signedIn", signedIn);
       })
       .catch(error => {

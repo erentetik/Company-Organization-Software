@@ -162,7 +162,6 @@ const handleChange = async () => {
     });
 };
 
-
     return ( 
         <div>
             <NavBar/>
