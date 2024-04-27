@@ -37,24 +37,16 @@ function ResetPassword({ language }) {
       setError(''); 
 
       
+      const requestUrl = `${url}/api/auth/reset-password?email=${email}`;
 
-      await axios.post(url + '/api/v1/auth/reset-password', {
-        email: email
+      await axios.post(requestUrl, {
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        if(response.data === 'Kullanıcı aktif değil.'){
-          setSnackbarMessage(Translations[language]['userNotActive']);
-          setSnackbarOpen(true);
-          return;
-        }else if(response.data === 'Kullanıcı bulunamadı.'){
-          setSnackbarMessage(Translations[language]['wrongEmail']);
-          setSnackbarOpen(true);
-        }else{
         setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
         setTimeout(() => {
           navigate('/');
-      }, 1000);}
+      }, 1000);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

@@ -42,11 +42,9 @@ function SignIn({ setSignedIn, signedIn, language }) {
           return;
       }
       setError(''); 
+      const requestUrl = `${url}/api/auth/signin?email=${email}&password=${password}`;
 
-    
-      await axios.post(url + '/api/v1/auth/signin', {
-        email: email,
-        password: password
+      await axios.post(requestUrl, {
       }).then(response => {
         console.log("Fetch operation was successful" , response);
         setSnackbarMessage(Translations[language]['loginSuccess']);

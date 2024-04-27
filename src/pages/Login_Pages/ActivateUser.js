@@ -33,20 +33,18 @@ const ActivateUser = ({ language }) => {
           return;
       }
       setError(''); 
+
+      const requestUrl = `${url}/api/auth/activate-account?email=${email}`;
+
       
-      await axios.post(url + "/api/v1/auth/activate-user", {
-        email: email
+      await axios.post(requestUrl , {
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        if(response.data === 'Kullanıcı zaten veritabanında mevcut.'){
-          setSnackbarMessage(Translations[language]['userIsAlreadyActive']);
-          setSnackbarOpen(true);
-        }else{
         setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
         setSnackbarOpen(true);
         setTimeout(() => {
           navigate('/');
-      }, 1000);}
+      }, 1000);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

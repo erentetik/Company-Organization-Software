@@ -10,6 +10,7 @@ import Companies from './pages/Home page/Companies';
 import Town from './pages/Home page/Town';
 import Regions from './pages/Home page/Regions';
 import City from './pages/Home page/City';
+import Activation from './pages/Login_Pages/Activation';
 import { AuthProvider } from './components/AuthContext';
 import LanguageSelector from './components/LanguageSelector';
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/ResetPassword" element={<ResetPassword language={language} />} />
             <Route path="/ActivateUser" element={<ActivateUser language={language} />} />
             <Route path="/setNewPassword/:token" element={<SetNewPassword language={language} />} />
+            <Route path="/Activation/:token" element={<Activation language={language} />} />
             <Route
               path="/Users"
               element={signedIn ? <Users signedIn={signedIn} setSignedIn={setSignedIn} language={language}/> : <Navigate to="/" replace />}
