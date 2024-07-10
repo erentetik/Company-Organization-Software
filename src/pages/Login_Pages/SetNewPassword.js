@@ -12,14 +12,12 @@ import { validatePassword } from '../../components/constants';
 import { url } from '../../components/constants';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import Translations from '../../Resources/languages';
+import { TokenOutlined } from '@mui/icons-material';
 
-
-function SetNewPassword({ language }) {
+function SetNewPassword() {
     const defaultTheme = createTheme();
     const { token }  = useParams();
     const navigate = useNavigate()
-    const [isLinkValid, setValid] = useState(false);
     const [isPasswordValid, setPasswordValid] = useState(true);
     const [password, setPassword] = useState('');
     const [error, setErrors] = useState('');
@@ -30,8 +28,7 @@ function SetNewPassword({ language }) {
       setSnackbarOpen(false);
     };
   
- 
-
+  
     const handleSubmit = async (data) => {
       data.preventDefault();
   
@@ -48,26 +45,20 @@ function SetNewPassword({ language }) {
       }
 
       setErrors([]); // Clear any previous errors
-      const requestUrl = `${url}/api/auth/confirm-reset-password?key=${token}&newPassword=${password}`;
       if (isPasswordValid) {
-          await axios.post(requestUrl, {
-             
+        console.log("token: ", token);
+        console.log("password", password);
+        
+          await axios.post('https://iD-2.eu-north-1.elasticbeanstalk.com/api/auth/setNewPassword', {
+              token: token,
+              password: password
           }).then((response) => {
               console.log("Fetch operation was successful", response);
-              setSnackbarMessage(Translations[language]['successfull']);
-              setSnackbarOpen(true);
-              setTimeout(() => {
-                navigate('/');
-            }, 1000);
         
           }).catch((error) => {
               console.log("There was a problem with the fetch operation:", error);
-              setSnackbarMessage(Translations[language]['anErrorAccured']);
-              setSnackbarOpen(true);
-
           });
-          
- 
+         
       }
   };
   
@@ -84,7 +75,7 @@ function SetNewPassword({ language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                {Translations[language]['enterNewPassword']}
+                Enter your password
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -92,7 +83,7 @@ function SetNewPassword({ language }) {
                   required
                   fullWidth
                   id="password"
-                  label={Translations[language]['password']}
+                  label="Password"
                   name="password"
                   type="password"
                   value={password}
@@ -107,7 +98,7 @@ function SetNewPassword({ language }) {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {Translations[language]['setNewPassword']}
+                  Set new password
                 </Button>
               </Box>
             </Box>
