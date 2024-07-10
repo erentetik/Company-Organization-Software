@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {  useState } from 'react';
 import NavigateButton from '../../components/NavigateButton';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
@@ -12,12 +12,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import  { MAIL_REGEX }  from '../../components/constants';
 import { url } from '../../components/constants';
-import { useNavigate } from 'react-router-dom';
-import Translations from '../../Resources/languages';
 
-const ActivateUser = ({ language }) => {
+const ActivateUser = () => {
     const defaultTheme = createTheme();
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -29,26 +26,21 @@ const ActivateUser = ({ language }) => {
       const email = formData.get("email");
 
       if (!MAIL_REGEX.test(email)) {
-          setError(Translations[language]['invalidEmail']);
+          setError('Invalid email address');
           return;
       }
       setError(''); 
-
-      const requestUrl = `${url}/api/auth/activate-account?email=${email}`;
-
       
-      await axios.post(requestUrl, {
+      await axios.post("/api/v1/auth/activate-user", {
+        email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
+        setSnackbarMessage('Verification email sent');
         setSnackbarOpen(true);
-        setTimeout(() => {
-          navigate('/');
-      }, 1000);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(Translations[language]['wrongEmail']);
+        setSnackbarMessage('Failed to send verification email');
         setSnackbarOpen(true);
       });
   };
@@ -66,7 +58,7 @@ const ActivateUser = ({ language }) => {
               }}
             >
               <Typography component="h1" variant="h5">
-                {Translations[language]['enterYourEmail']}
+                Enter your email
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -76,7 +68,7 @@ const ActivateUser = ({ language }) => {
                   onChange={(data) => setEmail(data.target.value)}
                   id="email"
                   type='email'
-                  label={Translations[language]['emailAddress']}
+                  label="Email Address"
                   name="email"
                   error={!!error} // Display error state
                   helperText={error} // Show error message
@@ -88,9 +80,9 @@ const ActivateUser = ({ language }) => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {Translations[language]['sendVerificationEmail']}
+                  Send verification email
                 </Button>
-                <NavigateButton to="/" buttonText={Translations[language]['alreadyHaveAnAccount']} fullWidth sx={{ mt: 3, mb: 2 }}/>
+                <NavigateButton to="/" buttonText="I already have an account" fullWidth sx={{ mt: 3, mb: 2 }}/>
               </Box>
             </Box>
           </Container>

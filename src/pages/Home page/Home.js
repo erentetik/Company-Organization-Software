@@ -2,36 +2,16 @@ import React from "react";
 import { useEffect } from "react";
 import { Container, Box, Typography, Button, Paper } from "@mui/material";
 import LocalStorageDelete from "../../Resources/localStorage";
-import NavBar from "../../components/navbar";
-import { useAuth } from "../../components/AuthContext";
-import Translations from "../../Resources/languages";
-
-
-const Home = ({ signedIn, setSignedIn, language }) => {
-
-    const image = localStorage.getItem("image");
-
-    const base64String = image;
-
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/jpeg' });
-
-    const imageUrl = URL.createObjectURL(blob);
-
-    const { handleSignOut } = useAuth();
+import defaultImg from "../../components/default_img.png";
+import { NavBar } from "../../components/navbar";
+const Home = ({ signedIn, setSignedIn }) => {
     const name = localStorage.getItem("name");
     const surname = localStorage.getItem("surname");
     const role = localStorage.getItem("role");
     const email = localStorage.getItem("email");
     const department = localStorage.getItem("department");
-    const company = localStorage.getItem("company");
+    const image = localStorage.getItem("image");
 
-    
     useEffect(() => {
         checkUser()
     }, [])
@@ -43,21 +23,26 @@ const Home = ({ signedIn, setSignedIn, language }) => {
         }
     }
 
- 
-
+    const handleSignOut = () => {
+        LocalStorageDelete();
+        setSignedIn(false);
+    };
     return ( 
         <Container>
-            <NavBar handleSignOut={handleSignOut}/>
+            <NavBar />
             <Box mt={4} display="flex" justifyContent="center">
                 <Paper elevation={3} style={{ padding: '20px', maxWidth: '500px' }}>
-                    <Typography variant="h3" align="center">{Translations[language]['userInfo']}</Typography>
-                    <img src={imageUrl} alt="User" style={{ width: '70%', borderRadius: '50%', marginBottom: '20px', marginLeft:'75px'  }} />
-                    <Typography variant="body1">{Translations[language]['name']}: {name}</Typography>
-                    <Typography variant="body1">{Translations[language]['surname']}: {surname}</Typography>
-                    <Typography variant="body1">{Translations[language]['role']}: {role}</Typography>
-                    <Typography variant="body1">{Translations[language]['email']}: {email}</Typography>
-                    <Typography variant="body1">{Translations[language]['company']}: {company}</Typography>
-                    <Typography variant="body1">{Translations[language]['department']}: {department}</Typography>
+                    <Typography variant="h3" align="center">Welcome to the Home Page</Typography>
+                    <img src={image ? image : "https://w7.pngwing.com/pngs/981/645/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol-thumbnail.png"} alt="User" style={{ width: '50%', borderRadius: '50%', marginBottom: '20px' }} />
+                    <Typography variant="body1">Name: {name}</Typography>
+                    <Typography variant="body1">Surname: {surname}</Typography>
+                    <Typography variant="body1">Role: {role}</Typography>
+                    <Typography variant="body1">Email: {email}</Typography>
+                    <Typography variant="body1">Department: {department}</Typography>
+
+                    <Box mt={2} display="flex" justifyContent="center">
+                        <Button variant="contained" onClick={handleSignOut}>Sign Out</Button>
+                    </Box>
                 </Paper>
             </Box>
         </Container>

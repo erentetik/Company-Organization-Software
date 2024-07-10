@@ -12,13 +12,9 @@ import { url } from '../../components/constants';
 import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import Translations from '../../Resources/languages';
-import { useNavigate } from 'react-router-dom';
 
-
-function ResetPassword({ language }) {
+function ResetPassword() {
     const defaultTheme = createTheme();
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -31,29 +27,25 @@ function ResetPassword({ language }) {
       const email = formData.get("email");
 
       if (!MAIL_REGEX.test(email)) {
-          setError(Translations[language]['invalidEmail']);
+          setError('Invalid email address');
           return;
       }
       setError(''); 
 
       
-      const requestUrl = `${url}/api/auth/reset-password?email=${email}`;
 
-      await axios.post(requestUrl, {
+      await axios.post(url + '/api/v1/auth/reset-password', {
+        email: email
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(Translations[language]['sendedVerificationEmail']);
+        setSnackbarMessage('Verification email sent');
         setSnackbarOpen(true);
-        setTimeout(() => {
-          navigate('/');
-      }, 1000);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(Translations[language]['wrongEmail']);
+        setSnackbarMessage('Failed to send verification email');
         setSnackbarOpen(true);
       });
-
          
   };
       
@@ -70,7 +62,7 @@ function ResetPassword({ language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                {Translations[language]['enterYourEmail']}
+                Enter your email
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -78,7 +70,7 @@ function ResetPassword({ language }) {
                   required
                   fullWidth
                   id="email"
-                  label={Translations[language]['emailAddress']}
+                  label="Email Address"
                   name="email"
                   onChange={(data) => setEmail(data.target.value)}
                   type='email'
@@ -92,9 +84,9 @@ function ResetPassword({ language }) {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {Translations[language]['sendVerificationEmail']}
+                  Send verification email
                 </Button>
-                <NavigateButton to="/" buttonText={Translations[language]['returnToSignInPage']} fullWidth sx={{ mt: 3, mb: 2 }}/>
+                <NavigateButton to="/" buttonText="Return sign in page" fullWidth sx={{ mt: 3, mb: 2 }}/>
               </Box>
             </Box>
           </Container>

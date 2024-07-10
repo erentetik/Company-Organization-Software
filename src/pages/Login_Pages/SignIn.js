@@ -5,6 +5,8 @@ import NavigateButton from '../../components/NavigateButton';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,10 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { MAIL_REGEX } from '../../components/constants';
 import { url } from '../../components/constants';
-import Translations from '../../Resources/languages';
 
-function SignIn({ setSignedIn, signedIn, language }) {
-
+function SignIn({ setSignedIn , language}) {
   const defaultTheme = createTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +24,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-
+  const currentLanguage = [language];
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -38,24 +38,33 @@ function SignIn({ setSignedIn, signedIn, language }) {
           const password = formData.get("password");
 
       if (!MAIL_REGEX.test(email)) {
-          setError(Translations[language]['invalidEmail']);
+          setError('Invalid email address');
           return;
       }
       setError(''); 
-      const requestUrl = `${url}/api/auth/signin?email=${email}&password=${password}`;
 
-      await axios.post(requestUrl, {
+      await axios.post(url + '/api/v1/auth/signin', {
+        email: email,
+        password: password
       }).then(response => {
         console.log("Fetch operation was successful" , response);
-        setSnackbarMessage(Translations[language]['loginSuccessMessage']);
+        console.log(response.data);
+        setSnackbarMessage('Login successful');
         setSnackbarOpen(true);
-        setSignedIn(true); 
-        console.log(response.data.data.userResponse.name);
-        localStorage.setItem("signedIn", signedIn);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("surname", response.data.surname);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("department", response.data.department);
+        localStorage.setItem("image", response.data.image);
+        setSignedIn(true);
+      
+    
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
-        setSnackbarMessage(Translations[language]['loginFailedMessage']);
+        setSnackbarMessage('Login failed');
         setSnackbarOpen(true);
         
       });
@@ -75,7 +84,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                {Translations[language]['signIn']}
+                Sign In
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -83,7 +92,7 @@ function SignIn({ setSignedIn, signedIn, language }) {
                   required
                   fullWidth
                   id="email"
-                  label={Translations[language]['emailAddress']}
+                  label="Email Address"
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -96,27 +105,30 @@ function SignIn({ setSignedIn, signedIn, language }) {
                   required
                   fullWidth
                   name="password"
-                  label={Translations[language]['password']}
+                  label="Password"
                   type="password"
                   id="password"
                   onChange={(data) => setPassword(data.target.value)}
                   autoComplete="current-password"
                 />
-                
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {Translations[language]['signIn']}
+                 Sign In
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <NavigateButton to="/ResetPassword" buttonText={Translations[language]['resetPassword']}/>
+                    <NavigateButton to="/ResetPassword" buttonText="Reset Password"/>
                   </Grid>
                   <Grid item>
-                    <NavigateButton to="/ActivateUser" buttonText={Translations[language]['activateUser']}/>
+                    <NavigateButton to="/ActivateUser" buttonText="Activate User"/>
                   </Grid>
                 </Grid>
               </Box>
