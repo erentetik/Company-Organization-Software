@@ -1,69 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React from 'react';
+import { useState } from 'react';
 import SignIn from './pages/Login_Pages/SignIn';
 import ActivateUser from './pages/Login_Pages/ActivateUser';
 import ResetPassword from './pages/Login_Pages/ResetPassword';
 import SetNewPassword from './pages/Login_Pages/SetNewPassword';
+import SetPassword from './pages/Login_Pages/SetPassword';
 import Home from './pages/Home page/Home';
-import Users from './pages/Home page/Users';
-import Companies from './pages/Home page/Companies';
-import Town from './pages/Home page/Town';
-import Regions from './pages/Home page/Regions';
-import City from './pages/Home page/City';
-import Activation from './pages/Login_Pages/Activation';
-import { AuthProvider } from './components/AuthContext';
-import LanguageSelector from './components/LanguageSelector';
+import {tr , en} from './Resources/languages';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 function App() {
-  const [signedIn, setSignedIn] = useState(localStorage.getItem('signedIn'));
-  const [language, setLanguage] = useState(localStorage.getItem('language') || 'en');
-  const name = localStorage.getItem('name');
-  
-
+  const [signedIn, setSignedIn] = useState(localStorage.getItem("userId") != null)
+  const languages = { tr, en }
+  const [language, setLanguage] = useState(languages.en)
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+  };
   return (
-    <AuthProvider setSignedIn={setSignedIn}>
-      <LanguageSelector language={language} setLanguage={setLanguage}/>
-
-      <Router>
-        <div className="content">
+    <Router>
+      <div className= "content">
+        <select value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
+          <option value={en}>English</option>
+          <option value={tr}>Turkish</option>
+        </select>
           <Routes>
-            <Route
-              exact
-              path="/home"
-              element={signedIn ? <Home signedIn={signedIn} setSignedIn={setSignedIn} language={language}  /> : <Navigate to="/" replace />}
+           <Route exact path="/home" element=
+              {signedIn ?
+                  <Home signedIn={signedIn} setSignedIn={setSignedIn} />
+                  :
+                  <Navigate to="/" replace />
+              } />
+            <Route exact path="/" element=
+                {signedIn ? <Navigate to="/home" replace /> : <SignIn setSignedIn={setSignedIn} />}
             />
-            <Route
-              exact
-              path="/"
-              element={signedIn ? <Navigate to="/home" replace /> : <SignIn setSignedIn={setSignedIn} language={language} />}
-            />
-            <Route path="/ResetPassword" element={<ResetPassword language={language} />} />
-            <Route path="/ActivateUser" element={<ActivateUser language={language} />} />
-            <Route path="/setNewPassword/:token" element={<SetNewPassword language={language} />} />
-            <Route path="/Activation/:token" element={<Activation language={language} />} />
-            <Route
-              path="/Users"
-              element={signedIn ? <Users signedIn={signedIn} setSignedIn={setSignedIn} language={language}/> : <Navigate to="/" replace />}
-            />
-            <Route
-              path="/Companies"
-              element={signedIn ? <Companies signedIn={signedIn} setSignedIn={setSignedIn} language={language} /> : <Navigate to="/" replace />}
-            />
-            <Route
-              path="/Towns"
-              element={signedIn ? <Town signedIn={signedIn} setSignedIn={setSignedIn} language={language} /> : <Navigate to="/" replace />}
-            />
-            <Route
-              path="/Regions"
-              element={signedIn ? <Regions signedIn={signedIn} setSignedIn={setSignedIn} language={language} /> : <Navigate to="/" replace />}
-            />
-            <Route
-              path="/Cities"
-              element={signedIn ? <City signedIn={signedIn} setSignedIn={setSignedIn} language={language}/> : <Navigate to="/" replace />}
-            />
+            <Route path="/ResetPassword" element={<ResetPassword />} />
+            <Route path="/ActivateUser" element={<ActivateUser />} />
+            <Route path="/setNewPassword/:token" element={<SetNewPassword />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/setPassword/:token" element={<SetPassword />} />
           </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+      </div>
+    </Router>
   );
 }
 
